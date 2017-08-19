@@ -19,20 +19,31 @@
       <div class="or"><a href="/~xiphmont/demo/index.html">(Monty's main demo page)</a></div>
     </div>
 
+    <hr/>
+    <h2 style="text-align: center; font-size: 2em; width: 100%;">&gt;&gt;&gt; Well Not Actually &mdash; Work In Progress &lt;&lt;&lt;</h2>
+    <p>This is an in-progress demo. It's not secret (we don't do things in secret),
+    but it's also not meant to be spread around yet. It still needs a lot more work,
+    but it's world-viewable to make it easier for others to contribute,
+    inspect, and critique.</p> <address>&mdash;Jean-Marc</address>
+    <hr/>
+
     <div>&nbsp;</div>
     <img class="caption" style="width: 100%; padding-top: 1em; margin-left: auto; margin-right: auto;" src="before.jpg" alt="Banner" onmouseover="this.src='after.jpg';" onmouseout="this.src='before.jpg';"/>
     <div class="caption">
-    This demo shows how deep learning can be used to both improve and greatly simplify noise suppresion. 
+    This demo presents the RNNoise project, showing how deep learning can be used to both improve and greatly simplify noise suppresion. 
     </div>
 
 
     <h2>Noise Suppression</h2>
 
     <p>Noise suppression is a pretty old topic in speech processing, dating back to at least the 70s.
+    As the name implies, the idea is to take a noisy signal and remove as much noise as possible
+    while causing minimum distortion to the speech of interest.
     </p>
 
     <img class="caption" style="width: 500px" src="noise_suppression.png">
     <div class="caption">
+
     This is a conceptual view of a conventional noise suppresion algorithm.
     A voice activity detection (VAD) module detects when the signal contains voice and
     when it's just noise. This is used by a noise spectral estimation module to figure out
@@ -75,6 +86,11 @@
 
     <h3>Defining the problem</h3>
 
+    <p>We want real-time</p>
+    <p>Outputs are gains rather than spectrum: simpler, avoids musical noise, full domain possible. </p>
+
+    <p>Inputs: log spectrum, pitch, non-stationarity</p>
+
     <img class="caption" style="width: 500px" src="topology.png">
     <div class="caption">
     Topology of the neural network used in this project. Each yellow box represents a layer of
@@ -93,7 +109,7 @@
     <p>Samples at different SNRs, different noise types.</p>
 
     <address style="clear: both;">&mdash;Jean-Marc Valin
-      (<a href="mailto:jmvalin@jmvalin.ca">jmvalin@jmvalin.ca</a>) June 20, 2017
+      (<a href="mailto:jmvalin@jmvalin.ca">jmvalin@jmvalin.ca</a>) September XX, 2017
     </address>
 
 

@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <link rel="icon" href="//www.xiph.org/images/logos/xiph.ico" type="image/x-icon"/>
+    <link rel="stylesheet" title="default demosheet" href="demo.css" type="text/css"/>
+    <link rel="stylesheet" title="default demosheet" media="print" href="demo_print.css" type="text/css"/>
+    <title>RNNoise: Deep Noise Suppression</title>
+    <script src="demo.js"></script>
+    <script src="speech_demo.js"></script>
+  </head>
+
+  <body onload="init_demo()">
+    <div id="xiphlogo">
+      <a href="//www.xiph.org/"><img
+      src="//www.xiph.org/images/logos/fish_xiph_org.png"
+      alt="Fish Logo and Xiph.org"/></a>
+      <h1>RNNoise: Deep Noise Suppression</h1>
+      <div class="or"><a href="/~xiphmont/demo/index.html">(Monty's main demo page)</a></div>
+    </div>
+
+    <div>&nbsp;</div>
+    <a href="https://opus-codec.org/downloads/">
+    <img class="caption" style="width: 100%; padding-top: 1em; margin-left: auto; margin-right: auto;" src="before.jpg" alt="Banner" onmouseover="this.src='after.jpg';" onmouseout="this.src='before.jpg';"/></a>
+    <div class="caption">
+    This demos how deep learning can be used to both improve and greatly simplify noise suppresion. 
+    </div>
+
+
+    <h3>Noise suppression</h2>
+
+
+    <img class="caption" style="width: 600px" src="noise_suppression.png">
+    <div class="caption">
+    This is a conceptual view of a conventional noise suppresion algorithm.
+    A voice activity detection (VAD) module detects when the signal contains voice and
+    when it's just noise. This is used by a noise spectral estimation module to figure out
+    the spectral characteristics of the noise (how much power at each frequency). Then, knowing
+    how the noise looks like, it can be "subtracted" (not as simple as it sounds) from the input
+    audio.</div>
+
+    <p>From looking at the figure above, noise suppression looks simple enough: just three conceptually
+    simple tasks and we're done, right? Right &mdash; and wrong! Any undergrad EE student can write
+    a noise suppression algorithm that works... kinda... sometimes. The hard part is to make it work
+    well, all the time, for all kinds of noise. 
+    </p>
+
+    <img class="caption" style="width: 600px" src="topology.png">
+    <div class="caption">
+    Topology of the neural network used in this project. Each yellow box represents a layer of
+    neurons and the three recurrent layers (GRU) are used (from top to bottom) to perform the
+    three main steps of noise suppression: voice activity detection, noise spectral estimation,
+    and spectral subtraction. The output of the network &mdash; rather than being a signal &mdash;
+    is a set of gains to apply at different frequencies.
+    </div>
+
+    <p>Foo</p>
+
+    <address style="clear: both;">&mdash;Jean-Marc Valin
+      (<a href="mailto:jmvalin@jmvalin.ca">jmvalin@jmvalin.ca</a>) June 20, 2017
+    </address>
+
+
+    <h2>Additional Resources</h2>
+    <ol style="padding-bottom: 1em;">
+      <li>First and foremost: <a href="https://www.opus-codec.org/">The Opus Project Homepage</a></li>
+      <li>Opus 1.2 builds on the <a  href="https://people.xiph.org/~xiphmont/demo/opus/demo3.shtml">Opus 1.1 improvements</a></li>
+      <li>The basic Opus techniques for music coding are described in the AES paper:
+      <a href="https://jmvalin.ca/papers/aes135_opus_celt.pdf">High-Quality, Low-Delay Music Coding in
+      the Opus Codec</a></li>
+      <li>The basic Opus techniques for speech coding are described in this other AES paper:
+      <a href="https://jmvalin.ca/papers/aes135_opus_silk.pdf">Voice Coding with Opus</a></li>
+      <li>Join our development discussion in <a href="irc://irc.freenode.net/opus">#opus at irc.freenode.net</a> (&rarr;<a href="https://webchat.freenode.net/?channels=opus" onclick="document.getElementById('chatbox').innerHTML='<iframe src=\'https://webchat.freenode.net/?channels=opus\' width=800 height=600/>';return false;">web interface</a>)</li>
+    </ol>
+      <div id="chatbox" style="text-align:center;"></div>
+    <hr />
+
+    <div class="et" style="position: relative;">
+      <!--<div style="position: absolute; bottom: -10px;">
+        <a href="https://mozilla.org/"><img src="moz-logo2.png" alt="Mozilla"/></a>
+      </div>-->
+      <div class="etleft" style="width: 132px; height: 75px;">
+      </div>
+      <div class="etcenter">
+        <div class="etcontent">
+          Jean-Marc's Opus documentation work is sponsored by the Mozilla Corporation.
+          <br/>(C) Copyright 2017 Mozilla and Xiph.Org
+        </div>
+      </div>
+      <div class="etright">
+        <div class="etcontent">
+          <a href="https://mozilla.org/"><img src="moz-logo-bw-rgb.png" style="width:240px;padding-top:0px;padding-bottom:0px;float:right;margin-left: 1em; margin-right:0px" alt="Mozilla"/></a>
+        </div>
+      </div>
+    </div>
+
+  </body>
+</html>
+

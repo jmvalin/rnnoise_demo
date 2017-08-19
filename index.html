@@ -20,17 +20,18 @@
     </div>
 
     <div>&nbsp;</div>
-    <a href="https://opus-codec.org/downloads/">
-    <img class="caption" style="width: 100%; padding-top: 1em; margin-left: auto; margin-right: auto;" src="before.jpg" alt="Banner" onmouseover="this.src='after.jpg';" onmouseout="this.src='before.jpg';"/></a>
+    <img class="caption" style="width: 100%; padding-top: 1em; margin-left: auto; margin-right: auto;" src="before.jpg" alt="Banner" onmouseover="this.src='after.jpg';" onmouseout="this.src='before.jpg';"/>
     <div class="caption">
-    This demos how deep learning can be used to both improve and greatly simplify noise suppresion. 
+    This demo shows how deep learning can be used to both improve and greatly simplify noise suppresion. 
     </div>
 
 
-    <h3>Noise suppression</h2>
+    <h2>Noise Suppression</h2>
 
+    <p>Noise suppression is a pretty old topic in speech processing, dating back to at least the 70s.
+    </p>
 
-    <img class="caption" style="width: 600px" src="noise_suppression.png">
+    <img class="caption" style="width: 500px" src="noise_suppression.png">
     <div class="caption">
     This is a conceptual view of a conventional noise suppresion algorithm.
     A voice activity detection (VAD) module detects when the signal contains voice and
@@ -42,10 +43,39 @@
     <p>From looking at the figure above, noise suppression looks simple enough: just three conceptually
     simple tasks and we're done, right? Right &mdash; and wrong! Any undergrad EE student can write
     a noise suppression algorithm that works... kinda... sometimes. The hard part is to make it work
-    well, all the time, for all kinds of noise. 
+    well, all the time, for all kinds of noise. That requires very careful tuning of every knob in the
+    algorithm, many special cases for strange signals and lots of testing. There's always some weird
+    signal that will cause problems and requires more tuning and it's very easy to break more things
+    than you fix. It's 50% science, 50% art. I've been there before with the noise suppressor
+    in the <a href="https://speex.org/">speexdsp library</a>. It kinda works, but it's not great.
     </p>
 
-    <img class="caption" style="width: 600px" src="topology.png">
+    <h2>Deep Learning and Recurrent Neural Networks</h2>
+
+    <p>Deep learning is the new version of an old idea: artificial neural networks. </p>
+
+    <h2>A Hybrid Approach</h2>
+
+    <p>Thanks to the successes of deep learning, it is now popular to throw deep neural networks
+    at the entire problem. These approaches are called <i>end-to-end</i> &mdash; it's neurons all
+    the way down. End-to-end approaches have been applied to <a href="">speech recognition</a> and to
+    <a href="">speech synthesis</a>
+    One the one hand, these end-to-end systems have proven just how powerful deep
+    neural networks can be. On the other end, these systems can sometimes be both suboptimal,
+    and wasteful in terms of resources. For example, some approaches use layers with thousands of
+    neurons &mdash; and tens of millions of weights &mdash; to perform noise suppression. The drawback
+    is now only the computational cost of running the network, but also the <i>size</i> of the model
+    itself because your library is now a thousand lines of code along with tens of megabytes (if not more)
+    worth of neuron weights.<p>
+
+    <p>That's why we went with a different approach here: keep all the basic signal processing
+    that's needed anyway (not have a neural network attempt to emulate it), but let the neural
+    network learn all the tricky parts that requires endless tweaking next to the signal processing.
+    </p>
+
+    <h3>Defining the problem</h3>
+
+    <img class="caption" style="width: 500px" src="topology.png">
     <div class="caption">
     Topology of the neural network used in this project. Each yellow box represents a layer of
     neurons and the three recurrent layers (GRU) are used (from top to bottom) to perform the
@@ -54,7 +84,13 @@
     is a set of gains to apply at different frequencies.
     </div>
 
-    <p>Foo</p>
+    <h3>It's all about the data</h3>
+
+    <h3>Pitch filtering</h3>
+
+    <h2>Show Me the Samples!</h2>
+
+    <p>Samples at different SNRs, different noise types.</p>
 
     <address style="clear: both;">&mdash;Jean-Marc Valin
       (<a href="mailto:jmvalin@jmvalin.ca">jmvalin@jmvalin.ca</a>) June 20, 2017
@@ -63,16 +99,8 @@
 
     <h2>Additional Resources</h2>
     <ol style="padding-bottom: 1em;">
-      <li>First and foremost: <a href="https://www.opus-codec.org/">The Opus Project Homepage</a></li>
-      <li>Opus 1.2 builds on the <a  href="https://people.xiph.org/~xiphmont/demo/opus/demo3.shtml">Opus 1.1 improvements</a></li>
-      <li>The basic Opus techniques for music coding are described in the AES paper:
-      <a href="https://jmvalin.ca/papers/aes135_opus_celt.pdf">High-Quality, Low-Delay Music Coding in
-      the Opus Codec</a></li>
-      <li>The basic Opus techniques for speech coding are described in this other AES paper:
-      <a href="https://jmvalin.ca/papers/aes135_opus_silk.pdf">Voice Coding with Opus</a></li>
-      <li>Join our development discussion in <a href="irc://irc.freenode.net/opus">#opus at irc.freenode.net</a> (&rarr;<a href="https://webchat.freenode.net/?channels=opus" onclick="document.getElementById('chatbox').innerHTML='<iframe src=\'https://webchat.freenode.net/?channels=opus\' width=800 height=600/>';return false;">web interface</a>)</li>
+      <li>The code: <a href="https://git.xiph.org/?p=rnnoise.git;a=summary">RNNoise Git repository</a></li>
     </ol>
-      <div id="chatbox" style="text-align:center;"></div>
     <hr />
 
     <div class="et" style="position: relative;">
@@ -83,7 +111,7 @@
       </div>
       <div class="etcenter">
         <div class="etcontent">
-          Jean-Marc's Opus documentation work is sponsored by the Mozilla Corporation.
+          Jean-Marc's documentation work is sponsored by the Mozilla Corporation.
           <br/>(C) Copyright 2017 Mozilla and Xiph.Org
         </div>
       </div>

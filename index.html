@@ -20,7 +20,7 @@
     </div>
 
     <hr/>
-    <h2 style="text-align: center; font-size: 2em; width: 100%;">&gt;&gt;&gt; Well Not Actually &mdash; Work In Progress &lt;&lt;&lt;</h2>
+    <h2 style="text-align: center; font-size: 2em; width: 100%;">&gt;&gt;&gt; Work In Progress &lt;&lt;&lt;</h2>
     <p>This is an in-progress demo. It's not secret (we don't do things in secret),
     but it's also not meant to be spread around yet. It still needs a lot more work,
     but it's world-viewable to make it easier for others to contribute,
@@ -36,12 +36,13 @@
 
     <h2>Noise Suppression</h2>
 
-    <p>Noise suppression is a pretty old topic in speech processing, dating back to at least the 70s.
+    <p>Noise suppression is a pretty old topic in speech processing,
+    <a href="http://ieeexplore.ieee.org/document/1163209/">dating back to at least the 70s</a>.
     As the name implies, the idea is to take a noisy signal and remove as much noise as possible
     while causing minimum distortion to the speech of interest.
     </p>
 
-    <img class="caption" style="width: 500px" src="noise_suppression.png">
+    <img class="caption" style="width: 500px" src="noise_suppression.png" alt="traditional noise suppression">
     <div class="caption">
 
     This is a conceptual view of a conventional noise suppresion algorithm.
@@ -63,7 +64,23 @@
 
     <h2>Deep Learning and Recurrent Neural Networks</h2>
 
-    <p>Deep learning is the new version of an old idea: artificial neural networks. </p>
+    <p>Deep learning is the new version of an old idea: artificial neural networks. Although those have
+    been around since the 60s, what's new in recent years is that:</p>
+    <ol>
+      <li>We now know how to make them deeper than two hidden layers</li>
+      <li>We know hot to make recurrent networks remember patterns long in the past</li>
+      <li>We have the computational resources to actually train them</li>
+    </ol>
+
+    <p>The most popular type of recurrent unit is the <i>long short-term memory</i> (LSTM) unit, but
+    RNNoise uses the Gated Recurrent Unit (GRU) because it performs slightly better than LSTM on
+    this task and requires fewer resources (both CPU and memory for weights). Compared to <i>plain</i>
+    recurrent units, GRUs have two extra <i>gates</i>. The <i>reset</i> gate controls whether the
+    state (memory) is used in computing the new state, whereas the <i>update</i> gate controls
+    how much the state will changed based on the new input. This update gate (when off) makes it
+    possible (and easy) for the GRU to remember information for a long period of time and is the
+    reason GRUs (and LSTMs) perform much better than simple recurrent units.
+    </p>
 
     <h2>A Hybrid Approach</h2>
 
@@ -82,16 +99,61 @@
     <p>That's why we went with a different approach here: keep all the basic signal processing
     that's needed anyway (not have a neural network attempt to emulate it), but let the neural
     network learn all the tricky parts that requires endless tweaking next to the signal processing.
+    Another thing that's different from <i>some</i> existing work on noise suppression with deep learning
+    is that we're targeting real-time communication rather than speech recognition, so we can't afford
+    to <i>look ahead</i> more than a few milliseconds (in this case 10 ms). 
     </p>
 
     <h3>Defining the problem</h3>
 
-    <p>We want real-time</p>
-    <p>Outputs are gains rather than spectrum: simpler, avoids musical noise, full domain possible. </p>
+    <p>To avoid having a very large number of outputs &mdash; and thus a large number of neurons &mdash;
+    we decided against working directly with samples or with a spectrum. Instead, we consider frequency
+    <i>bands</i> that follow the Bark scale, a frequency scale that matches how we perceive sounds. We use
+    a total of 22 bands, instead of the 480 (complex) spectral values we would otherwise have to consider.
+    </p>
 
-    <p>Inputs: log spectrum, pitch, non-stationarity</p>
+    <p>Insert figure showing bands</p>
 
-    <img class="caption" style="width: 500px" src="topology.png">
+    <p>Of course, we cannot represent audio just from the energy in 22 bands. What we can do though, is
+    a gain to apply to the signal for each of these bands. You can think about is as having a 22-band
+    equalizer and rapidly changing the settings of each band so as to attenuate the noise, but let the
+    signal through.</p>
+
+    <p>There are several advantages to operating with per-band gains. First, it makes for a much
+    simpler model since there are fewer bands to compute. Second, in makes it impossible to create
+    so-called <i>musical noise</i> artifacts, where only a single tone gets though while its neighbours
+    are attenuated. These artifacts are common in noise suppression and quite annoying. With bands that
+    are wide enough, we either let a whole band through, or we cut it all. The third advantage comes from
+    how we optimize the model. Since the gains are always bounded between 0 and 1, simply using a
+    sigmoid activation function (whose output is also between 0 and 1) to compute them ensures that
+    we can never do something <b>really</b> stupid, like adding noise that wasn't there in the first place.</p>
+
+    <!-- Alternatively, we could have used a rectified linear activation function to represent
+    an attenuation in dB betweeo 0 and infinity. -->
+
+    <p>Since the output we're computing is based on 22 bands, it makes little sense to have
+    more frequency resolution on the input, so we use the same 22 bands to feed spectral information
+    to the neural network. Because audio has a <b>huge</b> dynamic range, it's much better to compute
+    the log of the energy rather than to feed the energy directly. And while we're at it, it never
+    hurts to decorrelate the features using a DCT. The resulting data is a <i>cepstrum</i>
+    based on the Bark scale, which is closely related to the Mel-Frequency Cepstral Coefficients (MFCC)
+    that are very commonly used in speech recognition.</p>
+
+    <p>In addition to our cepstral coefficients, we also include:</p>
+    <ul>
+    <li>The first and second derivatives of the first 6 coefficients across frames</li>
+    <li>The pitch period</li>
+    <li>The pitch gain (strength) in 6 bands</li>
+    <li>A special non-stationarity value that's useful for detecting speech (but beyond the scope of this demo)</li>
+    </ul>
+
+    <p>That makes a total of 42 input features to the neural network.</p>
+
+    <h3>Deep architecture</h3>
+
+    <p>The deep architecture we use is inspired from the traditional approach to noise suppression. </p>
+
+    <img class="caption" style="width: 500px" src="topology.png" alt="network topology">
     <div class="caption">
     Topology of the neural network used in this project. Each yellow box represents a layer of
     neurons and the three recurrent layers (GRU) are used (from top to bottom) to perform the
@@ -103,6 +165,11 @@
     <h3>It's all about the data</h3>
 
     <h3>Pitch filtering</h3>
+
+    <h3>From Python to C</h3>
+
+    <p>Implementing GRU and Dense layers in C. Quantizing weights to 8 bits.</p>
+
 
     <h2>Show Me the Samples!</h2>
 

@@ -82,6 +82,8 @@
     reason GRUs (and LSTMs) perform much better than simple recurrent units.
     </p>
 
+    <p>Insert GRU figure?</p>
+
     <h2>A Hybrid Approach</h2>
 
     <p>Thanks to the successes of deep learning, it is now popular to throw deep neural networks
@@ -128,8 +130,18 @@
     sigmoid activation function (whose output is also between 0 and 1) to compute them ensures that
     we can never do something <b>really</b> stupid, like adding noise that wasn't there in the first place.</p>
 
-    <!-- Alternatively, we could have used a rectified linear activation function to represent
-    an attenuation in dB betweeo 0 and infinity. -->
+    <div class="tooltip"><img  style="width: 48px;" src="neuron48.png">
+      <span class="tooltiptext">
+        Alternatively, we could have used a rectified linear activation function to represent
+        an attenuation in dB betweeo 0 and infinity. Also, to better optimize the gain during
+        training, the loss function is the mean squared error (MSE) on the square root of the
+        gain, which is close to how we perceive loudness.
+      </span>
+    </div> 
+
+    <p>The main drawback of the lower resolution we get from using bands is that we do not
+    have a fine enough resolution to suppress the noise between pitch harmonics. Fortunately,
+    it's not so bad and there is an easy trick to do that (see the pitch filtering part below).</p>
 
     <p>Since the output we're computing is based on 22 bands, it makes little sense to have
     more frequency resolution on the input, so we use the same 22 bands to feed spectral information

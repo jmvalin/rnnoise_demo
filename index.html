@@ -195,17 +195,22 @@
       </span>
     </div> 
 
-    <p>In the case of noise suppression, we can't directly <i>collect</i> input/output data that can
+    <p>In the case of noise suppression, we can't just collect input/output data that can
     be used for supervised learning since we can rarely get both the clean speech <b>and</b> the noisy
     speech at the same time. Instead, we have to artificially create that data from separate
-    recordings of clean speech and noise. </p>
+    recordings of clean speech and noise. The tricky part is getting a wide variety of noise data
+    to add to the speech. We also have to make sure to cover all kinds of recording conditions. For
+    example, an early version trained only on full-band audio (0-20 kHz) would fail when the
+    audio was low-pass filtered at 8 kHz. </p>
 
     <div class="tooltip"><img  src="neuron48.png" alt="nerd stuff">
       <span class="tooltiptext">
         Unlike what is common for speech recognition, we choose not to apply cepstral mean
         normalization to our features and we retain first cepstral coefficient that represents
         the energy. Because of that, we have to ensure that the data includes audio at all
-        realistic levels. 
+        realistic levels. We also apply random filters to the audio to make the system
+        robust to a variety of microphone frequency responses (normally handled by cepstral
+        mean normalization).
       </span>
     </div> 
 
@@ -248,12 +253,15 @@
 
     <h2>Show Me the Samples!</h2>
 
+    <p>OK, that's nice and all, but how does it actually <b>sound</b>?</p>
+
     <p>Samples at different SNRs, different noise types.</p>
+
+    <h2>Donate Your Noise to Science</h2>
 
     <address style="clear: both;">&mdash;Jean-Marc Valin
       (<a href="mailto:jmvalin@jmvalin.ca">jmvalin@jmvalin.ca</a>) September XX, 2017
     </address>
-
 
     <h2>Additional Resources</h2>
     <ol style="padding-bottom: 1em;">

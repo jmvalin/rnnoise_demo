@@ -130,7 +130,7 @@
     sigmoid activation function (whose output is also between 0 and 1) to compute them ensures that
     we can never do something <b>really</b> stupid, like adding noise that wasn't there in the first place.</p>
 
-    <div class="tooltip"><img  style="width: 48px;" src="neuron48.png">
+    <div class="tooltip"><img  src="neuron48.png" alt="nerd stuff">
       <span class="tooltiptext">
         Alternatively, we could have used a rectified linear activation function to represent
         an attenuation in dB betweeo 0 and infinity. Also, to better optimize the gain during
@@ -176,12 +176,75 @@
 
     <h3>It's all about the data</h3>
 
+    <p>Even deep neural networks tend to be pretty dumb sometimes. They're very good at what they know
+    about, but they sometimes make pretty spectacular mistakes on inputs that are too far from what they
+    know. Even worse, they're really lazy students. If they can use any sort of loophole in the training
+    process to avoid learning something hard, then they will. That is why the quality of the training
+    data is critical.</p>
+
+    <div class="tooltip"><img  src="neuron48.png" alt="nerd stuff">
+      <span class="tooltiptext">
+        A widely-circulated story is that a long time ago, some army researchers were trying
+        to train a neural network to recognize tanks camouflaged in trees. The took pictures of
+        trees with and without tanks, then trained a neural network to identify the ones that had
+        a tank. The network succeeded beyond expectations! There was just one problem. Since the
+        photos with tanks has been taken on cloudy days while the photos without tanks has been
+        taken on sunny days, what the network really learned was how to tell a cloudy day from a
+        sunny day. While researchers are now aware of the issue and avoid such obvious mistakes,
+        more subtle versions of it can still occur (and has occurred to your truly in the past).
+      </span>
+    </div> 
+
+    <p>In the case of noise suppression, we can't directly <i>collect</i> input/output data that can
+    be used for supervised learning since we can rarely get both the clean speech <b>and</b> the noisy
+    speech at the same time. Instead, we have to artificially create that data from separate
+    recordings of clean speech and noise. </p>
+
+    <div class="tooltip"><img  src="neuron48.png" alt="nerd stuff">
+      <span class="tooltiptext">
+        Unlike what is common for speech recognition, we choose not to apply cepstral mean
+        normalization to our features and we retain first cepstral coefficient that represents
+        the energy. Because of that, we have to ensure that the data includes audio at all
+        realistic levels. 
+      </span>
+    </div> 
+
     <h3>Pitch filtering</h3>
+
+    <p>Since the frequency resolution of our bands is too coarse to filter noise between
+    pitch harmonics, we do it using basic signal processing. This is another part of the
+    hybrid approach. When one has multiple measurements of the same variable, the easiest
+    way to improve the accuracy (reduce noise) is simply to compute the average.
+    Obviously, just computing the average of adjacent audio samples isn't what we want since
+    it would result in low-pass filtering. However, when the signal is periodic (such as voiced
+    speech), then we can compute the average of samples offset by the pitch period. This results
+    in a <i>comb filter</i> that lets pitch harmonics through, while attenuating the frequencies
+    between them &mdash; where the noise lies. To avoid distorting the signal, the
+    comb filter is applied independently for each band and its gain depends both on the pitch gain
+    and on the band gain computed by the neural network.</p>
+
+    <div class="tooltip"><img  src="neuron48.png" alt="nerd stuff">
+      <span class="tooltiptext">
+        We currently use an FIR filter for the pitch, but it is also possible (and on the TODO list)
+        to use an IIR filter, which would result in greater noise attenuation at the risk of higher
+        distortion if the gain is too aggressive. 
+      </span>
+    </div> 
 
     <h3>From Python to C</h3>
 
-    <p>Implementing GRU and Dense layers in C. Quantizing weights to 8 bits.</p>
+    <p>All the design and training of the neural network is done in Python using the awesome
+    <a href="https://keras.io/">Keras</a> deep learning library. Since Python is usually
+    not the language of choice for real-time systems, we have to implement the run-time code
+    in C. Fortunately, the running a neural network is by far easier than training one, so
+    all we had to do was implement feed-forward and GRU layers. To make it easier to fit the
+    weights in a reasonable footprint, we constrain magnitude of the weights to +/- 0.5 during
+    training, which makes it easy to store them using 8-bit values. The resulting model fits
+    in just 85 kB (instead of the 340 kB required to store the weights as 32-bit floats).</p>
 
+    <p>The C code is available under the BSD-license. Although as of writing this demo, the code
+    is not yet optimized, it already runs about 60x faster than real-time on an x86 CPU. We
+    expect it should be possible to make it about 4x faster than it currently is. </p>
 
     <h2>Show Me the Samples!</h2>
 

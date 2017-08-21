@@ -68,12 +68,20 @@
     been around since the 60s, what's new in recent years is that:</p>
     <ol>
       <li>We now know how to make them deeper than two hidden layers</li>
-      <li>We know hot to make recurrent networks remember patterns long in the past</li>
+      <li>We know how to make recurrent networks remember patterns long in the past</li>
       <li>We have the computational resources to actually train them</li>
     </ol>
 
-    <p>The most popular type of recurrent unit is the <i>long short-term memory</i> (LSTM) unit, but
-    RNNoise uses the Gated Recurrent Unit (GRU) because it performs slightly better than LSTM on
+    <p>Recurrent neural networks (RNN) are very important here because make it possible to model time
+    sequences instead of just considering input and output frames independently. This is
+    especially important for noise suppression because we need time to get a good estimate
+    of the noise. For a long time, RNNs were heavily limited in their ability because
+    they could not hold information for a long period of time and because the gradient descent
+    process involved when backpropagating through time was very inefficient (the vanishing gradient
+    problem). Both problems were solved by the invention of <i>gated units</i>, such as the
+    Long Short-Term Memory (LSTM), the Gated Recurrent Unit (GRU), and their many variants.</p>
+
+    <p>RNNoise uses the Gated Recurrent Unit (GRU) because it performs slightly better than LSTM on
     this task and requires fewer resources (both CPU and memory for weights). Compared to <i>plain</i>
     recurrent units, GRUs have two extra <i>gates</i>. The <i>reset</i> gate controls whether the
     state (memory) is used in computing the new state, whereas the <i>update</i> gate controls
@@ -87,12 +95,14 @@
     <h2>A Hybrid Approach</h2>
 
     <p>Thanks to the successes of deep learning, it is now popular to throw deep neural networks
-    at the entire problem. These approaches are called <i>end-to-end</i> &mdash; it's neurons all
-    the way down. End-to-end approaches have been applied to <a href="">speech recognition</a> and to
-    <a href="">speech synthesis</a>
+    at an entire problem. These approaches are called <i>end-to-end</i> &mdash; it's neurons all
+    the way down. End-to-end approaches have been applied to
+    <a href="https://arxiv.org/pdf/1412.5567.pdf">speech recognition</a> and to
+    <a href="https://deepmind.com/blog/wavenet-generative-model-raw-audio/">speech synthesis</a>
     One the one hand, these end-to-end systems have proven just how powerful deep
     neural networks can be. On the other end, these systems can sometimes be both suboptimal,
-    and wasteful in terms of resources. For example, some approaches use layers with thousands of
+    and wasteful in terms of resources. For example, some approaches to noise suppression use
+    layers with thousands of
     neurons &mdash; and tens of millions of weights &mdash; to perform noise suppression. The drawback
     is now only the computational cost of running the network, but also the <i>size</i> of the model
     itself because your library is now a thousand lines of code along with tens of megabytes (if not more)
@@ -117,8 +127,8 @@
     <p>Insert figure showing bands</p>
 
     <p>Of course, we cannot represent audio just from the energy in 22 bands. What we can do though, is
-    a gain to apply to the signal for each of these bands. You can think about is as having a 22-band
-    equalizer and rapidly changing the settings of each band so as to attenuate the noise, but let the
+    compute a gain to apply to the signal for each of these bands. You can think about it as using a 22-band
+    equalizer and rapidly changing the level of each band so as to attenuate the noise, but let the
     signal through.</p>
 
     <p>There are several advantages to operating with per-band gains. First, it makes for a much
@@ -141,7 +151,7 @@
 
     <p>The main drawback of the lower resolution we get from using bands is that we do not
     have a fine enough resolution to suppress the noise between pitch harmonics. Fortunately,
-    it's not so bad and there is an easy trick to do that (see the pitch filtering part below).</p>
+    it's not so important and there is even an easy trick to do it (see the pitch filtering part below).</p>
 
     <p>Since the output we're computing is based on 22 bands, it makes little sense to have
     more frequency resolution on the input, so we use the same 22 bands to feed spectral information
@@ -163,7 +173,9 @@
 
     <h3>Deep architecture</h3>
 
-    <p>The deep architecture we use is inspired from the traditional approach to noise suppression. </p>
+    <p>The deep architecture we use is inspired from the traditional approach to noise suppression.
+    Most of the work is done by 3 GRU layers. They are connected to each other, but also
+    receive the inputs directly.</p>
 
     <img class="caption" style="width: 500px" src="topology.png" alt="network topology">
     <div class="caption">
@@ -176,22 +188,22 @@
 
     <h3>It's all about the data</h3>
 
-    <p>Even deep neural networks tend to be pretty dumb sometimes. They're very good at what they know
-    about, but they sometimes make pretty spectacular mistakes on inputs that are too far from what they
-    know. Even worse, they're really lazy students. If they can use any sort of loophole in the training
+    <p>Even deep neural networks can be pretty dumb sometimes. They're very good at what they know
+    about, but they can make pretty spectacular mistakes on inputs that are too far from what they
+    know about. Even worse, they're really lazy students. If they can use any sort of loophole in the training
     process to avoid learning something hard, then they will. That is why the quality of the training
     data is critical.</p>
 
     <div class="tooltip"><img  src="neuron48.png" alt="nerd stuff">
       <span class="tooltiptext">
         A widely-circulated story is that a long time ago, some army researchers were trying
-        to train a neural network to recognize tanks camouflaged in trees. The took pictures of
+        to train a neural network to recognize tanks camouflaged in trees. They took pictures of
         trees with and without tanks, then trained a neural network to identify the ones that had
         a tank. The network succeeded beyond expectations! There was just one problem. Since the
-        photos with tanks has been taken on cloudy days while the photos without tanks has been
+        photos with tanks had been taken on cloudy days while the photos without tanks has been
         taken on sunny days, what the network really learned was how to tell a cloudy day from a
         sunny day. While researchers are now aware of the issue and avoid such obvious mistakes,
-        more subtle versions of it can still occur (and has occurred to your truly in the past).
+        more subtle versions of it can still occur (and have occurred to your truly in the past).
       </span>
     </div> 
 

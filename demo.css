@@ -723,10 +723,10 @@
 .tooltip .tooltiptext {
     visibility: hidden;
     width: 700px;
-    background-color: #ffbb55;
+    background-color: #f0cc6f;
     color: #3e6585;
-    text-align: left;
-    padding: 5px 5px;
+    text-align: justify;
+    padding: 4px 9px;
     border-radius: 6px;
  
     /* Position the tooltip text - see examples below! */

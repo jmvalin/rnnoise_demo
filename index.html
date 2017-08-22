@@ -125,7 +125,10 @@
     <img class="caption" style="width: 876px;" src="bands.png">
     <div class="caption">
       Layout of the Opus bands vs the actual Bark scale. For RNNoise, we use the same base layout
-      as Opus, except that we overlap the bands.
+      as Opus. Since we overlap the bands, the boundaries between the Opus bands become the center
+      of the overlapped RNNoise bands. The bands are wider at higher frequency because the ear has
+      poorer frequency resolution there. At low frquencies, the bands are narrower, but not as narrow
+      as the Bark scale would give because then we would not have enough data to make good estimates.
     </div>
 
     <p>Of course, we cannot represent audio just from the energy in 22 bands. What we can do though, is

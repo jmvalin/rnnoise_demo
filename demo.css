@@ -686,6 +686,14 @@
         background-color: #ffdda3;
       }
 
+      .algorithm li {
+        border-color: #76cfdf;
+      }
+
+      .algorithm li:hover {
+        background-color: #def4f8;
+      }
+
       .restart li {
         border-color: #000000;
       }
@@ -696,6 +704,10 @@
 
       .bitrate .selected {
         background-color: #ffcc80;
+      }
+
+      .algorithm .selected {
+        background-color: #bae8f0;
       }
 
       .inactive li {

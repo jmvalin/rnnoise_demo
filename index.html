@@ -296,8 +296,47 @@
 
     <p>OK, that's nice and all, but how does it actually <b>sound</b>?</p>
 
-    <p>Samples at different SNRs, different noise types.</p>
+    <div class="comparison">
+      <audio controls="" id="music_player" src="https://jmvalin.ca/misc_stuff/denoised2.wav">
+        Your browser does not support the audio tag.
+      </audio>
+      <div>
+      <p class="compare_label" style="display: inline-block">Noise level (SNR)</p>
+      <ul class="codec">
+        <li onclick="setMusicCodec(0, this);">5 dB</li>
+        <li onclick="setMusicCodec(1, this);">10 dB</li>
+        <li onclick="setMusicCodec(2, this);">15 dB</li>
+        <li onclick="setMusicCodec(3, this);" id="music_default_codec" class="selected">20 dB</li>
+        <li onclick="setMusicCodec(4, this);">Clean</li>
+      </ul>
+      </div>
+      <div>
+      <p class="compare_label" style="display: inline-block">Noise type</p>
+      <ul class="bitrate" id="music_bitrate_selector">
+        <li onclick="setMusicRate(0, this);">Pink noise</li>
+        <li onclick="setMusicRate(1, this);">Babble noise</li>
+        <li onclick="setMusicRate(2, this);">Car noise</li>
+        <li onclick="setMusicRate(3, this);" id="music_default_rate" class="selected">Street noise</li>
+      </ul>
+      </div>
+      <p class="compare_label" style="display: inline-block">Suppression algorithm</p>
+      <ul class="algorithm" id="algorithm_selector">
+        <li onclick="setMusicRate(0, this);">No suppression</li>
+        <li onclick="setMusicRate(1, this);" id="music_default_algo" class="selected">RNNoise</li>
+        <li onclick="setMusicRate(2, this);">Speexdsp</li>
+      </ul>
+      </div>
+      <p>Select where to start playing when selecting a new sample</p>
+      <button type="button" onclick="music_norestart();">Keep playing</button>
+      <button type="button" onclick="music_setrestart();">Set current positon as restart point</button>
+      <p style="display: inline-block" id="music_restart_string">Player will <b>continue</b> when changing sample.</p>
+    </div>
+    <div class="caption">
+      <p><b>WARNING: This doesn't do anything useful for now. </b>Evaluating the effect of RNNoise compared to no suppression and to the Speexdsp noise suppressor.</p>
+    </div>
 
+
+    <h2>Try it on your voice!</h2>
     <!-- <button id="btn" onclick="toggle()">Enable</button> -->
 
     <h2>Donate Your Noise to Science</h2>

@@ -6,6 +6,8 @@
     <link rel="stylesheet" title="default demosheet" href="demo.css" type="text/css"/>
     <link rel="stylesheet" title="default demosheet" media="print" href="demo_print.css" type="text/css"/>
     <title>RNNoise: Deep Noise Suppression</title>
+    <!-- <script src="noise.js"></script>
+    <script src="noise_interface.js"></script> -->
   </head>
 
   <body>
@@ -138,7 +140,7 @@
       as the Bark scale would give because then we would not have enough data to make good estimates.
     </div>
 
-    <p>Of course, we cannot represent audio just from the energy in 22 bands. What we can do though, is
+    <p>Of course, we cannot reconstruct audio from just the energy in 22 bands. What we can do though, is
     compute a gain to apply to the signal for each of these bands. You can think about it as using a 22-band
     equalizer and rapidly changing the level of each band so as to attenuate the noise, but let the
     signal through.</p>
@@ -262,16 +264,16 @@
     speech), then we can compute the average of samples offset by the pitch period. This results
     in a <i>comb filter</i> that lets pitch harmonics through, while attenuating the frequencies
     between them &mdash; where the noise lies. To avoid distorting the signal, the
-    comb filter is applied independently for each band and its gain depends both on the pitch gain
+    comb filter is applied independently for each band and its filter strength depends both on the pitch correlation
     and on the band gain computed by the neural network.</p>
 
     <div id="pitch_details" class="tooltip_off">
         <a class="rightarrow" onclick="document.getElementById('pitch_details').className='tooltip_on';">▶ Show nerdy details</a>
         <a class="uparrow" onclick="document.getElementById('pitch_details').className='tooltip_off';">▼ Hide nerdy details</a>
       <p class="details">
-        We currently use an FIR filter for the pitch, but it is also possible (and on the TODO list)
+        We currently use an FIR filter for the pitch filtering, but it is also possible (and on the TODO list)
         to use an IIR filter, which would result in greater noise attenuation at the risk of higher
-        distortion if the gain is too aggressive. 
+        distortion if the strength is too aggressive.
       </p>
     </div> 
 
@@ -280,7 +282,7 @@
     <p>All the design and training of the neural network is done in Python using the awesome
     <a href="https://keras.io/">Keras</a> deep learning library. Since Python is usually
     not the language of choice for real-time systems, we have to implement the run-time code
-    in C. Fortunately, the running a neural network is by far easier than training one, so
+    in C. Fortunately, running a neural network is by far easier than training one, so
     all we had to do was implement feed-forward and GRU layers. To make it easier to fit the
     weights in a reasonable footprint, we constrain magnitude of the weights to +/- 0.5 during
     training, which makes it easy to store them using 8-bit values. The resulting model fits
@@ -295,6 +297,8 @@
     <p>OK, that's nice and all, but how does it actually <b>sound</b>?</p>
 
     <p>Samples at different SNRs, different noise types.</p>
+
+    <!-- <button id="btn" onclick="toggle()">Enable</button> -->
 
     <h2>Donate Your Noise to Science</h2>
 

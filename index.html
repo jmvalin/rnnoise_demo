@@ -122,7 +122,11 @@
     a total of 22 bands, instead of the 480 (complex) spectral values we would otherwise have to consider.
     </p>
 
-    <p>Insert figure showing bands</p>
+    <img class="caption" style="width: 876px;" src="bands.png">
+    <div class="caption">
+      Layout of the Opus bands vs the actual Bark scale. For RNNoise, we use the same base layout
+      as Opus, except that we overlap the bands.
+    </div>
 
     <p>Of course, we cannot represent audio just from the energy in 22 bands. What we can do though, is
     compute a gain to apply to the signal for each of these bands. You can think about it as using a 22-band
@@ -174,8 +178,12 @@
     <h3>Deep architecture</h3>
 
     <p>The deep architecture we use is inspired from the traditional approach to noise suppression.
-    Most of the work is done by 3 GRU layers. They are connected to each other, but also
-    receive the inputs directly.</p>
+    Most of the work is done by 3 GRU layers. The figure below shows the layers we use to compute the
+    band gains and how the architecture maps to the traditional steps in noise suppression. Of course,
+    as is often the case with neural networks we have no actual proof that the network is using its
+    layers as we intend, but the fact that the topology works better than others we tried makes it
+    reasonable to think it is behaving as we designed it.
+    </p>
 
     <img class="caption" style="width: 500px" src="topology.png" alt="network topology">
     <div class="caption">

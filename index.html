@@ -6,11 +6,9 @@
     <link rel="stylesheet" title="default demosheet" href="demo.css" type="text/css"/>
     <link rel="stylesheet" title="default demosheet" media="print" href="demo_print.css" type="text/css"/>
     <title>RNNoise: Deep Noise Suppression</title>
-    <script src="demo.js"></script>
-    <script src="speech_demo.js"></script>
   </head>
 
-  <body onload="init_demo()">
+  <body>
     <div id="xiphlogo">
       <a href="//www.xiph.org/"><img
       src="//www.xiph.org/images/logos/fish_xiph_org.png"
@@ -140,13 +138,15 @@
     sigmoid activation function (whose output is also between 0 and 1) to compute them ensures that
     we can never do something <b>really</b> stupid, like adding noise that wasn't there in the first place.</p>
 
-    <div class="tooltip"><img  src="neuron48.png" alt="nerd stuff">
-      <span class="tooltiptext">
+    <div id="gains_details" class="tooltip_off">
+        <a class="rightarrow" onclick="document.getElementById('gains_details').className='tooltip_on';">▶ Show nerdy details</a>
+        <a class="uparrow" onclick="document.getElementById('gains_details').className='tooltip_off';">▲ Hide nerdy details</a>
+      <p class="details">
         Alternatively, we could have used a rectified linear activation function to represent
         an attenuation in dB betweeo 0 and infinity. Also, to better optimize the gain during
         training, the loss function is the mean squared error (MSE) on the square root of the
         gain, which is close to how we perceive loudness.
-      </span>
+      </p>
     </div> 
 
     <p>The main drawback of the lower resolution we get from using bands is that we do not
@@ -194,8 +194,10 @@
     process to avoid learning something hard, then they will. That is why the quality of the training
     data is critical.</p>
 
-    <div class="tooltip"><img  src="neuron48.png" alt="nerd stuff">
-      <span class="tooltiptext">
+    <div id="tank_details" class="tooltip_off">
+        <a class="rightarrow" onclick="document.getElementById('tank_details').className='tooltip_on';">▶ Show nerdy details</a>
+        <a class="uparrow" onclick="document.getElementById('tank_details').className='tooltip_off';">▲ Hide nerdy details</a>
+      <p class="details">
         A widely-circulated story is that a long time ago, some army researchers were trying
         to train a neural network to recognize tanks camouflaged in trees. They took pictures of
         trees with and without tanks, then trained a neural network to identify the ones that had
@@ -204,7 +206,7 @@
         taken on sunny days, what the network really learned was how to tell a cloudy day from a
         sunny day. While researchers are now aware of the issue and avoid such obvious mistakes,
         more subtle versions of it can still occur (and have occurred to your truly in the past).
-      </span>
+      </p>
     </div> 
 
     <p>In the case of noise suppression, we can't just collect input/output data that can
@@ -215,15 +217,17 @@
     example, an early version trained only on full-band audio (0-20 kHz) would fail when the
     audio was low-pass filtered at 8 kHz. </p>
 
-    <div class="tooltip"><img  src="neuron48.png" alt="nerd stuff">
-      <span class="tooltiptext">
+    <div id="cms_details" class="tooltip_off">
+        <a class="rightarrow" onclick="document.getElementById('cms_details').className='tooltip_on';">▶ Show nerdy details</a>
+        <a class="uparrow" onclick="document.getElementById('cms_details').className='tooltip_off';">▲ Hide nerdy details</a>
+      <p class="details">
         Unlike what is common for speech recognition, we choose not to apply cepstral mean
         normalization to our features and we retain first cepstral coefficient that represents
         the energy. Because of that, we have to ensure that the data includes audio at all
         realistic levels. We also apply random filters to the audio to make the system
         robust to a variety of microphone frequency responses (normally handled by cepstral
         mean normalization).
-      </span>
+      </p>
     </div> 
 
     <h3>Pitch filtering</h3>
@@ -240,12 +244,14 @@
     comb filter is applied independently for each band and its gain depends both on the pitch gain
     and on the band gain computed by the neural network.</p>
 
-    <div class="tooltip"><img  src="neuron48.png" alt="nerd stuff">
-      <span class="tooltiptext">
+    <div id="pitch_details" class="tooltip_off">
+        <a class="rightarrow" onclick="document.getElementById('pitch_details').className='tooltip_on';">▶ Show nerdy details</a>
+        <a class="uparrow" onclick="document.getElementById('pitch_details').className='tooltip_off';">▲ Hide nerdy details</a>
+      <p class="details">
         We currently use an FIR filter for the pitch, but it is also possible (and on the TODO list)
         to use an IIR filter, which would result in greater noise attenuation at the risk of higher
         distortion if the gain is too aggressive. 
-      </span>
+      </p>
     </div> 
 
     <h3>From Python to C</h3>

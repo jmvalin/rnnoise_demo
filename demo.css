@@ -712,33 +712,33 @@
         background-color: #ddddee;
       }*/
 
-      /* Tooltip container */
-.tooltip {
-    position: relative;
-    display: inline-block;
-    /*border-bottom: 1px dotted black;*/
-}
 
-/* Tooltip text */
-.tooltip .tooltiptext {
-    visibility: hidden;
-    width: 700px;
-    background-color: #f0cc6f;
-    color: #3e6585;
-    text-align: justify;
-    padding: 4px 9px;
-    border-radius: 6px;
- 
-    /* Position the tooltip text - see examples below! */
-    position: absolute;
-    z-index: 1;
-}
+      .tooltip_on div.advanced {
+          display: none;
+      }
+      .tooltip_off div.advanced {
+          color: #3e6585;
+      }
 
-/* Show the tooltip text when you mouse over the tooltip container */
-.tooltip:hover .tooltiptext {
-    visibility: visible;
-}
+      .tooltip_on p.details {
+          background-color: #eeeeee;
+          margin: 10px 0px;
+          padding: 5px 5px;
+          /*border: solid;*/
+      }
+      .tooltip_off div.details {
+          display: none;
+      }
 
-.tooltip img {
-  width: 32px;
-}
+      a.uparrow {
+          text-decoration: none;
+      }
+      a.rightarrow {
+          text-decoration: none;
+      }
+      .tooltip_off a.uparrow {
+          display: none;
+      }
+      .tooltip_on a.rightarrow {
+          display: none;
+      }

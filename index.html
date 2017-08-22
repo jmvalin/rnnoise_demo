@@ -93,7 +93,8 @@
     Comparing a simple recurrent unit with a GRU. The difference lies in the GRU's <i>r</i> and <i>z</i>
     gates, which make it possible to learn longer-term patterns. Both are soft switches (value
     between 0 and 1) and are computed based on the previous state and the input, with a sigmoid
-    activation function. 
+    activation function. When the update gate <i>z</i> is on the left, then the state can remain
+    constant over a long period of time &mdash; until a condition causes <i>z</i> to switch to the right.
     </div>
 
     <h2>A Hybrid Approach</h2>
@@ -199,10 +200,11 @@
     <img class="caption" style="width: 500px" src="topology.png" alt="network topology">
     <div class="caption">
     Topology of the neural network used in this project. Each yellow box represents a layer of
-    neurons and the three recurrent layers (GRU) are used (from top to bottom) to perform the
-    three main steps of noise suppression: voice activity detection, noise spectral estimation,
-    and spectral subtraction. The output of the network &mdash; rather than being a signal &mdash;
-    is a set of gains to apply at different frequencies.
+    neurons, with the number of units indicated in parentheses. <i>Dense</i> layers are
+    fully-connected, non-recurrent layers. 
+    One of the output of the network is a set of gains to apply at different frequencies. The
+    other output is a voice activity probability, which is not used for noise suppression
+    but is a useful by-product of the network.
     </div>
 
     <h3>It's all about the data</h3>

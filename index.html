@@ -155,10 +155,12 @@
         <a class="rightarrow" onclick="document.getElementById('gains_details').className='tooltip_on';">▶ Show nerdy details</a>
         <a class="uparrow" onclick="document.getElementById('gains_details').className='tooltip_off';">▼ Hide nerdy details</a>
       <p class="details">
-        Alternatively, we could have used a rectified linear activation function to represent
-        an attenuation in dB betweeo 0 and infinity. Also, to better optimize the gain during
-        training, the loss function is the mean squared error (MSE) on the square root of the
-        gain, which is close to how we perceive loudness.
+        For the output, we could also have chosen a rectified linear activation function to represent
+        an attenuation in dB betweeo 0 and infinity. To better optimize the gain during
+        training, the loss function is the mean squared error (MSE) applied to the  gain raised to
+        the power &alpha;. So far, we have found that &alpha;=0.5 produces the best results perceptually.
+        Using &alpha;&rightarrow;0 would be equivalent to minimizing the log spectral distance, and
+        is problematic because the optimal gain can be very close to zero.
       </p>
     </div> 
 
@@ -239,10 +241,10 @@
         <a class="uparrow" onclick="document.getElementById('cms_details').className='tooltip_off';">▼ Hide nerdy details</a>
       <p class="details">
         Unlike what is common for speech recognition, we choose not to apply cepstral mean
-        normalization to our features and we retain first cepstral coefficient that represents
+        normalization to our features and we retain the first cepstral coefficient that represents
         the energy. Because of that, we have to ensure that the data includes audio at all
         realistic levels. We also apply random filters to the audio to make the system
-        robust to a variety of microphone frequency responses (normally handled by cepstral
+        robust to a variety of microphone frequency responses (which is normally handled by cepstral
         mean normalization).
       </p>
     </div> 

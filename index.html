@@ -337,9 +337,20 @@
 
 
     <h2>Try it on your voice!</h2>
+
+    <p>Not happy with the samples above? You can actually record from your microphone and have your audio denoised in (near)
+    real-time. If you click on the button below, RNNoise will perform noise suppression in Javascript from your browser. </p>
     <!-- <button id="btn" onclick="toggle()">Enable</button> -->
 
     <h2>Donate Your Noise to Science</h2>
+
+    <p>If you think this work is useful, there's an easy way to help make it even better! All it takes is a minute
+    of your time. Click on the "Record my noise" button below, don't say anything, and wait one minute while we collect
+    noise coming from your mic. This noise can be used to improve the training of the neural network. As a side benefit,
+    it means that the network will know what kind of noise you have and might do a better job when you get to use it
+    for videoconferencing (e.g. in WebRTC).</p>
+
+    <button id="noise_button">Record my noise</button> <p><b>WARNING: Doesn't do anything yet</b></p>
 
     <address style="clear: both;">&mdash;Jean-Marc Valin
       (<a href="mailto:jmvalin@jmvalin.ca">jmvalin@jmvalin.ca</a>) September XX, 2017

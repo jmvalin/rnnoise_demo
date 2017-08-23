@@ -74,23 +74,40 @@ function postData(arrayBuffer) {
   var xhr = new XMLHttpRequest();
   xhr.open("POST", "http://kyoko.thomasdaede.com:3001/upload");
   xhr.onload = function (event) {
-    streamingStatus.innerText = "Donated " + (uploadedPackets++) + " seconds of noise.";
+    uploadedPackets++;
+    streamingStatus.innerText = "Donated " + uploadedPackets + " seconds of noise (of 60).";
+    if (uploadedPackets >= 60) {
+      stopStreaming();
+    }
   };
   xhr.send(fd);
+}
+
+function stopStreaming() {
+  let streamingButton = document.getElementById("streaming_button");
+  let streamingStatusIcon = document.getElementById("streaming_status_icon");
+  let streamingStatus = document.getElementById("streaming_status");
+  streamingStatusIcon.style.visibility = "hidden";
+  streamMicrophoneData = false;
+  streamingButton.innerText = "Start donating a minute of noise!";
+  uploadedPackets = 0;
+  streamingStatus.innerText = "";
+}
+
+function startStreaming() {
+  let streamingButton = document.getElementById("streaming_button");
+  let streamingStatusIcon = document.getElementById("streaming_status_icon");
+  streamingStatusIcon.style.visibility = "visible";
+  streamMicrophoneData = true;
+  streamingButton.innerText = "Stop donating my noise!";
 }
 
 function toggleStreaming() {
   getMicrophoneAccess();
   
-  let streamingButton = document.getElementById("streaming_button");
-  let streamingStatusIcon = document.getElementById("streaming_status_icon");
   if (streamMicrophoneData) {
-    streamingStatusIcon.style.visibility = "hidden";
-    streamMicrophoneData = false;
-    streamingButton.innerText = "Start donating my noise!";
+    stopStreaming();
   } else {
-    streamingStatusIcon.style.visibility = "visible";
-    streamMicrophoneData = true;
-    streamingButton.innerText = "Stop donating my noise!";
+    startStreaming();
   }
 }

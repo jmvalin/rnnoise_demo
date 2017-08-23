@@ -6,6 +6,7 @@
     <link rel="stylesheet" title="default demosheet" href="demo.css" type="text/css"/>
     <link rel="stylesheet" title="default demosheet" media="print" href="demo_print.css" type="text/css"/>
     <title>RNNoise: Deep Noise Suppression</title>
+    <script src="record.js"></script>
     <!-- <script src="noise.js"></script>
     <script src="noise_interface.js"></script> -->
   </head>
@@ -350,7 +351,7 @@
     it means that the network will know what kind of noise you have and might do a better job when you get to use it
     for videoconferencing (e.g. in WebRTC).</p>
 
-    <button id="noise_button">Record my noise</button> <p><b>WARNING: Doesn't do anything yet</b></p>
+    <button id="noise_button" onclick="startStreaming()">Record my noise</button> <p><b>WARNING: Doesn't do anything yet</b></p>
 
     <address style="clear: both;">&mdash;Jean-Marc Valin
       (<a href="mailto:jmvalin@jmvalin.ca">jmvalin@jmvalin.ca</a>) September XX, 2017

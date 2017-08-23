@@ -78,7 +78,7 @@
     especially important for noise suppression because we need time to get a good estimate
     of the noise. For a long time, RNNs were heavily limited in their ability because
     they could not hold information for a long period of time and because the gradient descent
-    process involved when backpropagating through time was very inefficient (the vanishing gradient
+    process involved when back-propagating through time was very inefficient (the vanishing gradient
     problem). Both problems were solved by the invention of <i>gated units</i>, such as the
     Long Short-Term Memory (LSTM), the Gated Recurrent Unit (GRU), and their many variants.</p>
 
@@ -160,7 +160,7 @@
         <a class="uparrow" onclick="document.getElementById('gains_details').className='tooltip_off';">▼ Hide nerdy details</a>
       <p class="details">
         For the output, we could also have chosen a rectified linear activation function to represent
-        an attenuation in dB betweeo 0 and infinity. To better optimize the gain during
+        an attenuation in dB between 0 and infinity. To better optimize the gain during
         training, the loss function is the mean squared error (MSE) applied to the  gain raised to
         the power &alpha;. So far, we have found that &alpha;=0.5 produces the best results perceptually.
         Using &alpha;&rightarrow;0 would be equivalent to minimizing the log spectral distance, and
@@ -329,7 +329,7 @@
       </div>
       <p>Select where to start playing when selecting a new sample</p>
       <button type="button" onclick="music_norestart();">Keep playing</button>
-      <button type="button" onclick="music_setrestart();">Set current positon as restart point</button>
+      <button type="button" onclick="music_setrestart();">Set current position as restart point</button>
       <p style="display: inline-block" id="music_restart_string">Player will <b>continue</b> when changing sample.</p>
     </div>
     <div class="caption">

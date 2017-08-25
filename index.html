@@ -73,7 +73,7 @@
       <li>We have the computational resources to actually train them</li>
     </ol>
 
-    <p>Recurrent neural networks (RNN) are very important here because make it possible to model time
+    <p>Recurrent neural networks (RNN) are very important here because they make it possible to model time
     sequences instead of just considering input and output frames independently. This is
     especially important for noise suppression because we need time to get a good estimate
     of the noise. For a long time, RNNs were heavily limited in their ability because
@@ -86,12 +86,12 @@
     this task and requires fewer resources (both CPU and memory for weights). Compared to <i>plain</i>
     recurrent units, GRUs have two extra <i>gates</i>. The <i>reset</i> gate controls whether the
     state (memory) is used in computing the new state, whereas the <i>update</i> gate controls
-    how much the state will changed based on the new input. This update gate (when off) makes it
+    how much the state will change based on the new input. This update gate (when off) makes it
     possible (and easy) for the GRU to remember information for a long period of time and is the
     reason GRUs (and LSTMs) perform much better than simple recurrent units.
     </p>
 
-    <img class="caption" style="width: 550px;" src="simple_vs_gru.png">
+    <img class="caption" style="width: 700px;" src="simple_vs_gru.png">
     <div class="caption">
     Comparing a simple recurrent unit with a GRU. The difference lies in the GRU's <i>r</i> and <i>z</i>
     gates, which make it possible to learn longer-term patterns. Both are soft switches (value
@@ -112,7 +112,7 @@
     and wasteful in terms of resources. For example, some approaches to noise suppression use
     layers with thousands of
     neurons &mdash; and tens of millions of weights &mdash; to perform noise suppression. The drawback
-    is now only the computational cost of running the network, but also the <i>size</i> of the model
+    is not only the computational cost of running the network, but also the <i>size</i> of the model
     itself because your library is now a thousand lines of code along with tens of megabytes (if not more)
     worth of neuron weights.<p>
 

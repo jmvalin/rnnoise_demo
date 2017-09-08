@@ -6,12 +6,13 @@
     <link rel="stylesheet" title="default demosheet" href="demo.css" type="text/css"/>
     <link rel="stylesheet" title="default demosheet" media="print" href="demo_print.css" type="text/css"/>
     <title>RNNoise: Deep Noise Suppression</title>
+    <script src="demo.js"></script>
     <script src="record.js"></script>
     <!-- <script src="noise.js"></script>
     <script src="noise_interface.js"></script> -->
   </head>
 
-  <body>
+  <body onload="init_demo();">
     <div id="xiphlogo">
       <a href="//www.xiph.org/"><img
       src="//www.xiph.org/images/logos/fish_xiph_org.png"
@@ -304,27 +305,27 @@
       <div>
       <p class="compare_label" style="display: inline-block">Noise level (SNR)</p>
       <ul class="codec">
-        <li onclick="setMusicCodec(0, this);">5 dB</li>
-        <li onclick="setMusicCodec(1, this);">10 dB</li>
-        <li onclick="setMusicCodec(2, this);">15 dB</li>
-        <li onclick="setMusicCodec(3, this);" id="music_default_codec" class="selected">20 dB</li>
-        <li onclick="setMusicCodec(4, this);">Clean</li>
+        <li onclick="setLevel(0, this);">0 dB</li>
+        <li onclick="setLevel(1, this);">5 dB</li>
+        <li onclick="setLevel(2, this);">10 dB</li>
+        <li onclick="setLevel(3, this);">15 dB</li>
+        <li onclick="setLevel(4, this);" id="default_level" class="selected">20 dB</li>
+        <li onclick="setLevel(5, this);">Clean</li>
       </ul>
       </div>
       <div>
       <p class="compare_label" style="display: inline-block">Noise type</p>
-      <ul class="bitrate" id="music_bitrate_selector">
-        <li onclick="setMusicRate(0, this);">Pink noise</li>
-        <li onclick="setMusicRate(1, this);">Babble noise</li>
-        <li onclick="setMusicRate(2, this);">Car noise</li>
-        <li onclick="setMusicRate(3, this);" id="music_default_rate" class="selected">Street noise</li>
+      <ul class="bitrate" id="noise_type_selector">
+        <li onclick="setType(0, this);" id="default_type" class="selected">Babble noise</li>
+        <li onclick="setType(1, this);">Car noise</li>
+        <li onclick="setType(2, this);">Street noise</li>
       </ul>
       </div>
       <p class="compare_label" style="display: inline-block">Suppression algorithm</p>
       <ul class="algorithm" id="algorithm_selector">
-        <li onclick="setMusicRate(0, this);">No suppression</li>
-        <li onclick="setMusicRate(1, this);" id="music_default_algo" class="selected">RNNoise</li>
-        <li onclick="setMusicRate(2, this);">Speexdsp</li>
+        <li onclick="setProcessing(0, this);">No suppression</li>
+        <li onclick="setProcessing(1, this);" id="default_processing" class="selected">RNNoise</li>
+        <li onclick="setProcessing(2, this);">Speexdsp</li>
       </ul>
       </div>
       <p>Select where to start playing when selecting a new sample</p>

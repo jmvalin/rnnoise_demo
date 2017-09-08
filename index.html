@@ -296,10 +296,12 @@
 
     <h2>Show Me the Samples!</h2>
 
-    <p>OK, that's nice and all, but how does it actually <b>sound</b>?</p>
+    <p>OK, that's nice and all, but how does it actually <b>sound</b>? Here's some examples of RNNoise
+    in action, removing three different types of noise. Neither the noise nor the clean speech were
+    used during the training. </p>
 
     <div class="comparison">
-      <audio controls="" id="music_player" src="https://jmvalin.ca/misc_stuff/denoised2.wav">
+      <audio controls="" id="music_player">
         Your browser does not support the audio tag.
       </audio>
       <div>
@@ -334,7 +336,7 @@
       <p style="display: inline-block" id="music_restart_string">Player will <b>continue</b> when changing sample.</p>
     </div>
     <div class="caption">
-      <p><b>WARNING: This doesn't do anything useful for now. </b>Evaluating the effect of RNNoise compared to no suppression and to the Speexdsp noise suppressor.</p>
+      <p>Evaluating the effect of RNNoise compared to no suppression and to the Speexdsp noise suppressor.</p>
     </div>
 
 
@@ -342,6 +344,8 @@
 
     <p>Not happy with the samples above? You can actually record from your microphone and have your audio denoised in (near)
     real-time. If you click on the button below, RNNoise will perform noise suppression in Javascript from your browser. </p>
+
+    <b>WARNING: This doesn't do anything yet</b>
     <!-- <button id="btn" onclick="toggle()">Enable</button> -->
 
     <h2>Donate Your Noise to Science</h2>
@@ -351,6 +355,7 @@
     noise coming from your mic. This noise can be used to improve the training of the neural network. As a side benefit,
     it means that the network will know what kind of noise you have and might do a better job when you get to use it
     for videoconferencing (e.g. in WebRTC).</p>
+    <p><b>WARNING: This doesn't work yet</b></p>
 
     <button id="streaming_button" onclick="toggleStreaming()">Start donating a minute of noise!</button><p>
       <div style="width: 100%; display: table; visibility: hidden;" id="streaming_status_icon">

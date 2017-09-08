@@ -309,14 +309,14 @@
         <li onclick="setLevel(1, this);">5 dB</li>
         <li onclick="setLevel(2, this);">10 dB</li>
         <li onclick="setLevel(3, this);">15 dB</li>
-        <li onclick="setLevel(4, this);" id="default_level" class="selected">20 dB</li>
+        <li onclick="setLevel(4, this);" id="default_level">20 dB</li>
         <li onclick="setLevel(5, this);">Clean</li>
       </ul>
       </div>
       <div>
       <p class="compare_label" style="display: inline-block">Noise type</p>
       <ul class="bitrate" id="noise_type_selector">
-        <li onclick="setType(0, this);" id="default_type" class="selected">Babble noise</li>
+        <li onclick="setType(0, this);" id="default_type">Babble noise</li>
         <li onclick="setType(1, this);">Car noise</li>
         <li onclick="setType(2, this);">Street noise</li>
       </ul>
@@ -324,7 +324,7 @@
       <p class="compare_label" style="display: inline-block">Suppression algorithm</p>
       <ul class="algorithm" id="algorithm_selector">
         <li onclick="setProcessing(0, this);">No suppression</li>
-        <li onclick="setProcessing(1, this);" id="default_processing" class="selected">RNNoise</li>
+        <li onclick="setProcessing(1, this);" id="default_processing">RNNoise</li>
         <li onclick="setProcessing(2, this);">Speexdsp</li>
       </ul>
       </div>

@@ -2,9 +2,9 @@
 var selected_level;
 var selected_type;
 var selected_processing;
-var noise_level_id=4;
-var noise_type_id=0;
-var noise_processing_id=1;
+var noise_level_id=-1;
+var noise_type_id=-1;
+var noise_processing_id=-1;
 
 var music_pos = -1;
 

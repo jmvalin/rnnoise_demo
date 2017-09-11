@@ -678,19 +678,19 @@
         background-color: #d7edff;
       }
 
-      .bitrate li {
+      .algorithm li {
         border-color: #ff9900;
       }
 
-      .bitrate li:hover {
+      .algorithm li:hover {
         background-color: #ffdda3;
       }
 
-      .algorithm li {
+      .bitrate li {
         border-color: #76cfdf;
       }
 
-      .algorithm li:hover {
+      .bitrate li:hover {
         background-color: #def4f8;
       }
 
@@ -702,11 +702,11 @@
         background-color: #a5d6ff;
       }
 
-      .bitrate .selected {
+      .algorithm .selected {
         background-color: #ffcc80;
       }
 
-      .algorithm .selected {
+      .bitrate .selected {
         background-color: #bae8f0;
       }
 

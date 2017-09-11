@@ -87,8 +87,8 @@ function music_setrestart() {
 }
 
 function init_demo() {
-  setLevel(4, document.getElementById("default_level"));
+  setLevel(3, document.getElementById("default_level"));
   setType(0, document.getElementById("default_type"));
-  setProcessing(1, document.getElementById("default_processing"));
+  setProcessing(0, document.getElementById("default_processing"));
   music_norestart();
 }

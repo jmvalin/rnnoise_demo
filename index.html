@@ -92,7 +92,7 @@
     reason GRUs (and LSTMs) perform much better than simple recurrent units.
     </p>
 
-    <img class="caption" style="width: 700px;" src="simple_vs_gru.png">
+    <img class="caption" style="width: 700px;" src="simple_vs_gru.png" alt="recurrent units">
     <div class="caption">
     Comparing a simple recurrent unit with a GRU. The difference lies in the GRU's <i>r</i> and <i>z</i>
     gates, which make it possible to learn longer-term patterns. Both are soft switches (value
@@ -133,7 +133,7 @@
     a total of 22 bands, instead of the 480 (complex) spectral values we would otherwise have to consider.
     </p>
 
-    <img class="caption" style="width: 876px;" src="bands.png">
+    <img class="caption" style="width: 876px;" src="bands.png" alt="frequency bands">
     <div class="caption">
       Layout of the Opus bands vs the actual Bark scale. For RNNoise, we use the same base layout
       as Opus. Since we overlap the bands, the boundaries between the Opus bands become the center
@@ -305,13 +305,21 @@
         Your browser does not support the audio tag.
       </audio>
       <div>
+      <p class="compare_label" style="display: inline-block">Suppression algorithm</p>
+      <ul class="algorithm" id="algorithm_selector">
+        <li onclick="setProcessing(0, this);" id="default_processing">No suppression</li>
+        <li onclick="setProcessing(1, this);">RNNoise</li>
+        <li onclick="setProcessing(2, this);">Speexdsp</li>
+      </ul>
+      </div>
+      <div>
       <p class="compare_label" style="display: inline-block">Noise level (SNR)</p>
       <ul class="codec">
         <li onclick="setLevel(0, this);">0 dB</li>
         <li onclick="setLevel(1, this);">5 dB</li>
         <li onclick="setLevel(2, this);">10 dB</li>
-        <li onclick="setLevel(3, this);">15 dB</li>
-        <li onclick="setLevel(4, this);" id="default_level">20 dB</li>
+        <li onclick="setLevel(3, this);" id="default_level">15 dB</li>
+        <li onclick="setLevel(4, this);">20 dB</li>
         <li onclick="setLevel(5, this);">Clean</li>
       </ul>
       </div>
@@ -321,13 +329,6 @@
         <li onclick="setType(0, this);" id="default_type">Babble noise</li>
         <li onclick="setType(1, this);">Car noise</li>
         <li onclick="setType(2, this);">Street noise</li>
-      </ul>
-      </div>
-      <p class="compare_label" style="display: inline-block">Suppression algorithm</p>
-      <ul class="algorithm" id="algorithm_selector">
-        <li onclick="setProcessing(0, this);">No suppression</li>
-        <li onclick="setProcessing(1, this);" id="default_processing">RNNoise</li>
-        <li onclick="setProcessing(2, this);">Speexdsp</li>
       </ul>
       </div>
       <p>Select where to start playing when selecting a new sample</p>

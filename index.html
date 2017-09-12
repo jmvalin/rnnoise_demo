@@ -4,8 +4,9 @@
     <meta charset="utf-8">
     <link rel="icon" href="//www.xiph.org/images/logos/xiph.ico" type="image/x-icon"/>
     <link rel="stylesheet" title="default demosheet" href="demo.css" type="text/css"/>
-    <link rel="stylesheet" title="default demosheet" media="print" href="demo_print.css" type="text/css"/>
+    <!-- <link rel="stylesheet" title="default demosheet" media="print" href="demo_print.css" type="text/css"/> -->
     <title>RNNoise: Deep Noise Suppression</title>
+    <script src="chroma.min.js"></script>
     <script src="demo.js"></script>
     <script src="noise.js"></script>
     <script src="record.js"></script>
@@ -345,10 +346,27 @@
     <h2>Try it on your voice!</h2>
 
     <p>Not happy with the samples above? You can actually record from your microphone and have your audio denoised in (near)
-    real-time. If you click on the button below, RNNoise will perform noise suppression in Javascript from your browser. </p>
+    real-time. If you click on the button below, RNNoise will perform noise suppression in Javascript from your browser.
+    <b>Make sure to wear headphones otherwise you'll hear a feedback loop.</b></p>
 
-    <b>WARNING: This doesn't do anything yet</b>
-    <!-- <button id="btn" onclick="toggle()">Enable</button> -->
+    <div class="comparison">
+      <div>
+        <p class="compare_label" style="display: inline-block">Suppression algorithm</p>
+        <ul class="algorithm" id="algorithm_selector">
+          <li onclick="liveNoiseSuppression(0, this);" id="default_processing">No suppression</li>
+          <li onclick="liveNoiseSuppression(1, this);">RNNoise</li>
+        </ul>
+      </div>
+
+      <p class="compare_label" style="display: inline-block">Noise type</p>
+      <ul class="bitrate">
+        <li onclick="liveNoise(0, this);" id="default_live_noise">None</li>
+        <li onclick="liveNoise(1, this);">White noise</li>
+      </ul>
+    </div>
+
+    <canvas id="source_spectrogram" width="16" height="16"></canvas>
+    <canvas id="destination_spectrogram" width="16" height="16"></canvas>
 
     <h2>Donate Your Noise to Science</h2>
 
@@ -389,8 +407,6 @@
         </div>
       </div>
     </p>
-
-    <button id="active_button" onclick="toggleNoiseSuppression()">Toggle noise suppression!</button>
 
     <address style="clear: both;">&mdash;Jean-Marc Valin
       (<a href="mailto:jmvalin@jmvalin.ca">jmvalin@jmvalin.ca</a>) September XX, 2017

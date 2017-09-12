@@ -91,4 +91,6 @@ function init_demo() {
   setType(0, document.getElementById("default_type"));
   setProcessing(0, document.getElementById("default_processing"));
   music_norestart();
+
+  liveNoise(0, document.getElementById("default_live_noise"));
 }

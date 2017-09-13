@@ -6,7 +6,7 @@
     <link rel="stylesheet" title="default demosheet" href="demo.css" type="text/css"/>
     <!-- <link rel="stylesheet" title="default demosheet" media="print" href="demo_print.css" type="text/css"/> -->
     <title>RNNoise: Deep Noise Suppression</title>
-    <script src="chroma.min.js"></script>
+    <script src="ffmap.js"></script>
     <script src="demo.js"></script>
     <script src="noise.js"></script>
     <script src="record.js"></script>
@@ -347,14 +347,16 @@
 
     <p>Not happy with the samples above? You can actually record from your microphone and have your audio denoised in (near)
     real-time. If you click on the button below, RNNoise will perform noise suppression in Javascript from your browser.
+    The algorithm runs in real-time but we've purposely <b>delayed it by 3 seconds</b> to make it easier to hear the denoised output.
     <b>Make sure to wear headphones otherwise you'll hear a feedback loop.</b></p>
 
     <div class="comparison">
       <div>
         <p class="compare_label" style="display: inline-block">Suppression algorithm</p>
         <ul class="algorithm" id="algorithm_selector">
-          <li onclick="liveNoiseSuppression(0, this);" id="default_processing">No suppression</li>
-          <li onclick="liveNoiseSuppression(1, this);">RNNoise</li>
+          <li onclick="liveNoiseSuppression(0, this);" id="default_live_noise_suppression">Off</li>
+          <li onclick="liveNoiseSuppression(1, this);">No suppression</li>
+          <li onclick="liveNoiseSuppression(2, this);">RNNoise</li>
         </ul>
       </div>
 

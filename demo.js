@@ -93,4 +93,5 @@ function init_demo() {
   music_norestart();
 
   liveNoise(0, document.getElementById("default_live_noise"));
+  liveNoiseSuppression(0, document.getElementById("default_live_noise_suppression"));
 }

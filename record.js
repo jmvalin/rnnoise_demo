@@ -1,6 +1,6 @@
 
-var MIN_DB_LEVEL = -85;
-var MAX_DB_LEVEL = -30;
+var MIN_DB_LEVEL = -95;
+var MAX_DB_LEVEL = -40;
 
 var DB_LEVEL_RANGE = MAX_DB_LEVEL - MIN_DB_LEVEL;
 var HEAT_COLORS = [];
@@ -19,27 +19,13 @@ function clamp(v, a, b) {
   if (v > b) v = b;
   return v;
 }
-var darkScale = chroma.scale("Spectral").domain([ 1, 0 ]);
 var DarkTheme = {
-  backgroundColor: "#212121",
-  scale: function(value) {
-    return darkScale(value);
-  }
+  // backgroundColor: "#212121"
+  backgroundColor: "#000000"
 };
-var lightScale = chroma.scale("Set1");
 var LightTheme = {
-  backgroundColor: "#F5F5F5",
-  scale: function(value) {
-    return lightScale(value);
-  }
+  backgroundColor: "#F5F5F5"
 };
-var hotScale = chroma.scale({
-  colors: [ "#000000", "#ff0000", "#ffff00", "#ffffff" ],
-  positions: [ 0, .25, .75, 1 ],
-  mode: "rgb",
-  limits: [ 0, 300 ]
-});
-var hotScale = chroma.scale([ "#000000", "#ff0000", "#ffff00", "#ffffff" ]);
 
 var __extends = this && this.__extends || function() {
   var extendStatics = Object.setPrototypeOf || {
@@ -153,9 +139,9 @@ var SpectogramAnalyzerNodeView = function(_super) {
     var maxBinCount = this.width / this.binTotalWidth | 0;
     var binCount = Math.min(maxBinCount, this.frequency.bins.length);
     for (var i = 0; i < binCount; i++) {
-      ctx.fillStyle = this.theme.scale(i / binCount);
       var value = clamp((this.frequency.bins[i] - MIN_DB_LEVEL) / DB_LEVEL_RANGE, 0, 1);
-      ctx.globalAlpha = value * 2;
+      ctx.globalAlpha = 1;
+      ctx.fillStyle = FF_MAP[clamp((this.frequency.bins[i] - MIN_DB_LEVEL) / DB_LEVEL_RANGE, 0, 1) * FF_MAP.length | 0];
       ctx.fillRect(this.width - this.binTotalWidth, i * this.tickTotalHeight, this.binWidth, this.tickHeight);
     }
     ctx.restore();
@@ -198,7 +184,7 @@ function getMicrophoneAccess() {
 
   var inputBuffer = [];
   var outputBuffer = [];
-  var bufferSize = 1024;
+  var bufferSize = 16384;
   var sampleRate = audioContext.sampleRate;
   var processingNode = audioContext.createScriptProcessor(bufferSize, 1, 1);
 
@@ -230,7 +216,7 @@ function getMicrophoneAccess() {
     for (let j = 0; j < 1; j++) {
       Module._rnnoise_process_frame(st, ptr, ptr);
     }
-    console.log("Processed Buffer");
+    // console.log("Processed Buffer");
     for (let i = 0; i < 480; i++) {
       buffer[i] = Module.HEAPF32[(ptr >> 2) + i] / 32768;
     }
@@ -241,6 +227,13 @@ function getMicrophoneAccess() {
   processingNode.onaudioprocess = function (e) {
     var input = e.inputBuffer.getChannelData(0);
     var output = e.outputBuffer.getChannelData(0);
+
+    if (!streamMicrophoneData) {
+      for (let i = 0; i < bufferSize; i++) {
+        output[i] = 0;
+      }
+      return;
+    }
 
     // Drain input buffer.
     for (let i = 0; i < bufferSize; i++) {
@@ -402,17 +395,21 @@ function toggleNoise() {
 
 var selectedLiveNoiseSuppression = null;
 function liveNoiseSuppression(type, item) {
-  getMicrophoneAccess();
-  initializeNoiseSuppression();
-  if (type == 0) {
-    stopNoiseSuppression();
-  } else {
-    startNoiseSuppression();
-  }
-
   if (selectedLiveNoiseSuppression) selectedLiveNoiseSuppression.classList.remove("selected");
   selectedLiveNoiseSuppression = item;
   item.classList.add("selected");
+  if (type == 0) {
+    streamMicrophoneData = false;    
+    return;
+  }    
+  getMicrophoneAccess();
+  initializeNoiseSuppression();
+  streamMicrophoneData = true;
+  if (type == 1) {
+    suppressNoise = false;
+  } else if (type == 2) {
+    suppressNoise = true;
+  }
 }
 
 var selectedLiveNoise = null;
@@ -422,24 +419,3 @@ function liveNoise(type, item) {
   selectedLiveNoise = item;
   item.classList.add("selected");
 }
-
-function stopNoiseSuppression() {
-  // let streamingButton = document.getElementById("streaming_button");
-  // let streamingStatusIcon = document.getElementById("streaming_status_icon");
-  // let streamingStatus = document.getElementById("streaming_status");
-  // streamingStatusIcon.style.visibility = "hidden";
-  suppressNoise = false;
-  // streamingButton.innerText = "Start donating a minute of noise!";
-  // uploadedPackets = 0;
-  // streamingStatus.innerText = "";
-}
-
-function startNoiseSuppression() {
-  // let streamingButton = document.getElementById("streaming_button");
-  // let streamingStatusIcon = document.getElementById("streaming_status_icon");
-  // streamingStatusIcon.style.visibility = "visible";
-  streamMicrophoneData = true;
-  suppressNoise = true;
-  // streamingButton.innerText = "Stop donating my noise!";
-}
-

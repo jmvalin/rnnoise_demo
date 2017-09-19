@@ -339,9 +339,23 @@
       <p style="display: inline-block" id="music_restart_string">Player will <b>continue</b> when changing sample.</p>
     </div>
     <div class="caption">
-      <p>Evaluating the effect of RNNoise compared to no suppression and to the Speexdsp noise suppressor.</p>
+      <p>Evaluating the effect of RNNoise compared to no suppression and to the Speexdsp noise suppressor. Although the
+      SNRs provided go as low as 0&nbsp;dB, most applications we are targeting (e.g. WebRTC calls) tend to have SNRs
+      closer to 20&nbsp;dB than to 0&nbsp;dB. </p>
     </div>
 
+    <p>So what should you listen for anyway? As strange as it may sound, you should <b>not</b> be expecting
+    an increase in intelligibility. Humans are so good at understanding speech in noise that an enhancement
+    algorithm &mdash; especially one that isn't allowed to look ahead of the speech it's denoising &mdash;
+    can only destroy information. So why are we doing this in the first place? For quality. The enhanced speech is
+    much less annoying to listen to and likely causes less listener fatigue.</p> 
+
+    <p>Actually, there are still a few cases where it can actually help
+    intelligibility. The first is videoconferencing, when multiple speakers are being mixed together. For that
+    application, then noise suppresion avoids all the noise from inactive speakers to be mixed in with the active
+    speaker, improving both quality and intelligibility. A second case is when the output is sent through a
+    low bitrate codec because those tend to degrade noisy speech more than clean speech, so removing the noise
+    allows the codec to do a better job.</p>
 
     <h2>Try it on your voice!</h2>
 

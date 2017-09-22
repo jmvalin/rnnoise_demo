@@ -158,11 +158,27 @@ var SpectogramAnalyzerNodeView = function(_super) {
 let microphoneIsWiredUp = false;
 let microphoneAccessIsNotAllowed = undefined;
 let uploadMicrophoneData = false;
-let streamMicrophoneData = false;
 let suppressNoise = false;
 let addNoise = false;
+let mediaStream = null;
+let animation = null;
 
 let Module = null;
+function stopMicrophone() {
+  if (!microphoneIsWiredUp) {
+    return;
+  }
+  if (mediaStream) {
+    mediaStream.getTracks().forEach(track => {
+      track.stop();
+    });
+  }
+  if (animation) {
+    cancelAnimationFrame(animation);
+  }
+  microphoneIsWiredUp = false;
+}
+
 function getMicrophoneAccess() {
   if (microphoneIsWiredUp) {
     return;
@@ -176,18 +192,19 @@ function getMicrophoneAccess() {
   }
 
   // Check if there is microphone input.
-  try {
-    navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia || navigator.msGetUserMedia;
-  } catch (e) {
+  navigator.getUserMedia = navigator.getUserMedia ||
+                           navigator.webkitGetUserMedia ||
+                           navigator.mozGetUserMedia ||
+                           navigator.msGetUserMedia;
+  if (!navigator.getUserMedia) {
     alert("getUserMedia() is not supported in your browser.");
+    return;
   }
-
   var inputBuffer = [];
   var outputBuffer = [];
   var bufferSize = 16384;
   var sampleRate = audioContext.sampleRate;
   var processingNode = audioContext.createScriptProcessor(bufferSize, 1, 1);
-
   var noiseNode = audioContext.createScriptProcessor(bufferSize, 1, 1);
 
   noiseNode.onaudioprocess = function (e) {
@@ -202,21 +219,13 @@ function getMicrophoneAccess() {
     }
   };
 
-  function sineWaveAt(sampleNumber, tone) {
-    var sampleFrequency = sampleRate / tone
-    return Math.sin(sampleNumber / (sampleFrequency / (Math.PI * 2)))
-  }
-
   function removeNoise(buffer) {
     let ptr = Module.ptr;
     let st = Module.st;
     for (let i = 0; i < 480; i++) {
       Module.HEAPF32[(ptr >> 2) + i] = buffer[i] * 32768;
     }
-    for (let j = 0; j < 1; j++) {
-      Module._rnnoise_process_frame(st, ptr, ptr);
-    }
-    // console.log("Processed Buffer");
+    Module._rnnoise_process_frame(st, ptr, ptr);
     for (let i = 0; i < 480; i++) {
       buffer[i] = Module.HEAPF32[(ptr >> 2) + i] / 32768;
     }
@@ -228,23 +237,34 @@ function getMicrophoneAccess() {
     var input = e.inputBuffer.getChannelData(0);
     var output = e.outputBuffer.getChannelData(0);
 
-    if (!streamMicrophoneData) {
-      for (let i = 0; i < bufferSize; i++) {
-        output[i] = 0;
-      }
-      return;
-    }
-
     // Drain input buffer.
     for (let i = 0; i < bufferSize; i++) {
       inputBuffer.push(input[i]);
     }
+
+    // if (uploadMicrophoneData) {
+    //   while (inputBuffer.length >= sampleRate) {
+    //     let buffer = [];
+    //     for (let i = 0; i < sampleRate; i++) {
+    //       buffer.push(inputBuffer.shift())
+    //     }
+    //     postData(convertFloat32ToInt16(buffer).buffer);
+    //     console.log("Posting ...");
+    //   }
+    //   for (let i = 0; i < bufferSize; i++) {
+    //     output[i] = 0;
+    //   }
+    //   return;
+    // }
+
     while (inputBuffer.length >= 480) {
       for (let i = 0; i < 480; i++) {
         frameBuffer[i] = inputBuffer.shift();
       }
       // Process Frame
-      if (suppressNoise) removeNoise(frameBuffer);
+      if (suppressNoise) {
+        removeNoise(frameBuffer);
+      }
       for (let i = 0; i < 480; i++) {
         outputBuffer.push(frameBuffer[i]);
       }
@@ -257,25 +277,11 @@ function getMicrophoneAccess() {
     for (let i = 0; i < bufferSize; i++) {
       output[i] = outputBuffer.shift();
     }
-
-    // {
-    //   while (inputBuffer.length >= sampleRate) {
-    //     let buffer = [];
-    //     for (let i = 0; i < sampleRate; i++) {
-    //       buffer.push(inputBuffer.shift())
-    //     }
-    //     if (uploadMicrophoneData) {
-    //       postData(convertFloat32ToInt16(buffer).buffer);
-    //     }
-    //   }
-    //   for (let i = 0; i < bufferSize; i++) {
-    //     output[i] = 0;
-    //   }
-    // }
   }
 
   // Get access to the microphone and start pumping data through the graph.
   navigator.getUserMedia({ audio: true }, function (stream) {
+    mediaStream = stream;
     var microphone = audioContext.createMediaStreamSource(stream);
     var sourceAnalyserNode = audioContext.createAnalyser();
     var destinationAnalyserNode = audioContext.createAnalyser();
@@ -295,13 +301,12 @@ function getMicrophoneAccess() {
 
     var sourceView = new SpectogramAnalyzerNodeView(sourceAnalyserNode, document.getElementById("source_spectrogram"), 876, 256);
     var destinationView = new SpectogramAnalyzerNodeView(destinationAnalyserNode, document.getElementById("destination_spectrogram"), 876, 256);
-
     function tick() {
       sourceView.tick();
       destinationView.tick();
-      requestAnimationFrame(tick);
+      animation = requestAnimationFrame(tick);
     }
-    requestAnimationFrame(tick);
+    animation = requestAnimationFrame(tick);
 
   }, function (e) {
     if (e.name === "PermissionDeniedError") {
@@ -333,6 +338,7 @@ function postData(arrayBuffer) {
     streamingStatus.innerText = "Donated " + uploadedPackets + " seconds of noise (of 60).";
     if (uploadedPackets >= 60) {
       stopStreaming();
+      stopMicrophone();
     }
   };
   xhr.send(fd);
@@ -359,7 +365,6 @@ function startStreaming() {
 
 function toggleStreaming() {
   getMicrophoneAccess();
-  
   if (uploadMicrophoneData) {
     stopStreaming();
   } else {
@@ -367,7 +372,7 @@ function toggleStreaming() {
   }
 }
 
-function initializeNoiseSuppression() {
+function initializeNoiseSuppressionModule() {
   if (Module) {
     return;
   }
@@ -385,8 +390,6 @@ function initializeNoiseSuppression() {
   NoiseModule(Module);
   Module.st = Module._rnnoise_create();
   Module.ptr = Module._malloc(480 * 4);
-
-  // console.info(Module._rnnoise_process_frame);
 }
 
 function toggleNoise() {
@@ -399,12 +402,12 @@ function liveNoiseSuppression(type, item) {
   selectedLiveNoiseSuppression = item;
   item.classList.add("selected");
   if (type == 0) {
-    streamMicrophoneData = false;    
+    stopMicrophone();
     return;
   }    
   getMicrophoneAccess();
-  initializeNoiseSuppression();
-  streamMicrophoneData = true;
+  initializeNoiseSuppressionModule();
+  stopStreaming();
   if (type == 1) {
     suppressNoise = false;
   } else if (type == 2) {

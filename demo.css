@@ -7,7 +7,8 @@
 	  color: #333333;
 	  background-color: #ffffff;
 	  max-width: 876px;
-	  font-size: 13px;
+	  font-size: 14px;
+	  line-height: 1.15em;
       }
 
       a {
@@ -22,7 +23,7 @@
 
       p {
 	  clear: both;
-	  line-height: 1.25em;
+	  line-height: 1.3em;
 	  text-align: justify;
       }
 
@@ -666,7 +667,7 @@
       }
 
       p.compare_label {
-        width: 11em;
+        width: 12em;
         font-weight: bold;
       }
 

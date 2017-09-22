@@ -34,7 +34,8 @@
     <div>&nbsp;</div>
     <img class="caption" style="width: 100%; padding-top: 1em; margin-left: auto; margin-right: auto;" src="before.jpg" alt="Banner" onmouseover="this.src='after.jpg';" onmouseout="this.src='before.jpg';"/>
     <div class="caption">
-    This demo presents the RNNoise project, showing how deep learning can be used to both improve and greatly simplify noise suppresion. 
+    This demo presents the RNNoise project, showing how deep learning can be used to both improve and greatly simplify noise suppresion.
+    The image above shows the spectrogram of the audio before and after (when moving the mouse over) noise suppression.
     </div>
 
 
@@ -292,9 +293,9 @@
     training, which makes it easy to store them using 8-bit values. The resulting model fits
     in just 85 kB (instead of the 340 kB required to store the weights as 32-bit floats).</p>
 
-    <p>The C code is available under the BSD-license. Although as of writing this demo, the code
-    is not yet optimized, it already runs about 60x faster than real-time on an x86 CPU. We
-    expect it should be possible to make it about 4x faster than it currently is. </p>
+    <p>The C code is <a href="https://git.xiph.org/?p=rnnoise.git;a=summary">available</a> under the BSD license. Although as of writing this demo, the code
+    is not yet optimized, it already runs about 60x faster than real-time on an x86 CPU.
+    With good vectorization (SSE/AVX), it should be possible to make it about 4x faster than it currently is. </p>
 
     <h2>Show Me the Samples!</h2>
 
@@ -357,7 +358,7 @@
     low bitrate codec. Those tend to degrade noisy speech more than clean speech, so removing the noise
     allows the codec to do a better job.</p>
 
-    <h2>Try it on your voice!</h2>
+    <h3>Try it on your voice!</h3>
 
     <p>Not happy with the samples above? You can actually record from your microphone and have your audio denoised in (near)
     real-time. If you click on the button below, RNNoise will perform noise suppression in Javascript from your browser.
@@ -384,7 +385,7 @@
     <canvas id="source_spectrogram" width="16" height="16"></canvas>
     <canvas id="destination_spectrogram" width="16" height="16"></canvas>
 
-    <h2>Donate Your Noise to Science</h2>
+    <h3>Donate Your Noise to Science</h3>
 
     <p>If you think this work is useful, there's an easy way to help make it even better! All it takes is a minute
     of your time. Click on the "Record my noise" button below, don't say anything, and wait one minute while we collect
@@ -424,6 +425,24 @@
       </div>
     </p>
 
+    <h2>Where from here?</h2>
+
+    <p>
+    If you'd like to know more about the technical details of RNNoise, see this <a href="">paper</a> (not yet submitted).
+    The code is still under active development (with no frozen API), but is already usable in applications. It is currently
+    targeted at VoIP/videoconferencing applications, but with a few tweaks, it can probably be applied to many other tasks.
+    An obvious target is automatic speech recognition (ASR), and while we can just denoise the noisy speech and send the
+    output to the ASR, this is sub-optimal because it discards useful information about the inherent uncertainty of the process.
+    It's a lot more useful when the ASR knows not only the most likely clean speech, but also how much it can rely on that estimate.
+    Another possible "retargeting" for RNNoise is making a much smarter <i>noise gate</i> for electric musical instruments.
+    All it should take is good training data and a few changes to the code to turn a Raspberry Pi into a really good guitar noise gate.
+    Any takers? There are probably many other potential applications we haven't considered yet.</p>
+
+    <p>Improve pitch filter. 
+    </p>
+    
+    <p>If you would like to comment on this demo, you can do so on <a href="">my blog</a>.</p>
+
     <address style="clear: both;">&mdash;Jean-Marc Valin
       (<a href="mailto:jmvalin@jmvalin.ca">jmvalin@jmvalin.ca</a>) September XX, 2017
     </address>
@@ -432,6 +451,7 @@
     <ol style="padding-bottom: 1em;">
       <li>The code: <a href="https://git.xiph.org/?p=rnnoise.git;a=summary">RNNoise Git repository</a>
       (<a href="https://github.com/xiph/rnnoise/">Github mirror</a>)</li>
+      <li>J.-M. Valin, <a href="https://jmvalin.ca/misc_stuff/rnnoise.pdf">A Hybrid DSP/Deep Learning Approach to Real-Time Full-Band Speech Enhancement</a>. </li>
     </ol>
     <hr />
 

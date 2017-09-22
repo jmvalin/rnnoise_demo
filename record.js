@@ -1,5 +1,5 @@
 
-var MIN_DB_LEVEL = -95;
+var MIN_DB_LEVEL = -110;
 var MAX_DB_LEVEL = -40;
 
 var DB_LEVEL_RANGE = MAX_DB_LEVEL - MIN_DB_LEVEL;
@@ -111,7 +111,7 @@ var SpectogramAnalyzerNodeView = function(_super) {
     _this.binWidth = 1;
     _this.binHPadding = 0;
     _this.binTotalWidth = _this.binWidth + _this.binHPadding;
-    _this.tickHeight = 1;
+    _this.tickHeight = 2;
     _this.tickVPadding = 0;
     _this.tickTotalHeight = _this.tickHeight + _this.tickVPadding;
     _this.reset();
@@ -138,11 +138,11 @@ var SpectogramAnalyzerNodeView = function(_super) {
     ctx.fillRect(0, 0, this.width, this.height);
     var maxBinCount = this.width / this.binTotalWidth | 0;
     var binCount = Math.min(maxBinCount, this.frequency.bins.length);
-    for (var i = 0; i < binCount; i++) {
-      var value = clamp((this.frequency.bins[i] - MIN_DB_LEVEL) / DB_LEVEL_RANGE, 0, 1);
+    for (var i = 0; i < binCount / 2 | 0; i++) {
+      var value = clamp((this.frequency.bins[i] - MIN_DB_LEVEL) / DB_LEVEL_RANGE, 0, 0.995);
       ctx.globalAlpha = 1;
-      ctx.fillStyle = FF_MAP[clamp((this.frequency.bins[i] - MIN_DB_LEVEL) / DB_LEVEL_RANGE, 0, 1) * FF_MAP.length | 0];
-      ctx.fillRect(this.width - this.binTotalWidth, i * this.tickTotalHeight, this.binWidth, this.tickHeight);
+      ctx.fillStyle = FF_MAP[value * FF_MAP.length | 0];
+      ctx.fillRect(this.width - this.binTotalWidth, (binCount/4-i-1) * this.tickTotalHeight, this.binWidth, this.tickHeight);
     }
     ctx.restore();
     ctx.translate(-this.binTotalWidth, 0);
@@ -282,8 +282,8 @@ function getMicrophoneAccess() {
     sourceAnalyserNode.smoothingTimeConstant = 0;
     destinationAnalyserNode.smoothingTimeConstant = 0;
 
-    sourceAnalyserNode.fftSize = 512;
-    destinationAnalyserNode.fftSize = 512;
+    sourceAnalyserNode.fftSize = 1024;
+    destinationAnalyserNode.fftSize = 1024;
 
     microphone.connect(noiseNode);
     noiseNode.connect(sourceAnalyserNode);

@@ -345,6 +345,7 @@ function postData(arrayBuffer) {
 }
 
 function stopStreaming() {
+  return;
   let streamingButton = document.getElementById("streaming_button");
   let streamingStatusIcon = document.getElementById("streaming_status_icon");
   let streamingStatus = document.getElementById("streaming_status");

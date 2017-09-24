@@ -240,8 +240,8 @@
     speech at the same time. Instead, we have to artificially create that data from separate
     recordings of clean speech and noise. The tricky part is getting a wide variety of noise data
     to add to the speech. We also have to make sure to cover all kinds of recording conditions. For
-    example, an early version trained only on full-band audio (0-20 kHz) would fail when the
-    audio was low-pass filtered at 8 kHz. </p>
+    example, an early version trained only on full-band audio (0-20&nbsp;kHz) would fail when the
+    audio was low-pass filtered at 8&nbsp;kHz. </p>
 
     <div id="cms_details" class="tooltip_off">
         <a class="rightarrow" onclick="document.getElementById('cms_details').className='tooltip_on';">▶ Show nerdy details</a>
@@ -287,13 +287,14 @@
     not the language of choice for real-time systems, we have to implement the run-time code
     in C. Fortunately, running a neural network is by far easier than training one, so
     all we had to do was implement feed-forward and GRU layers. To make it easier to fit the
-    weights in a reasonable footprint, we constrain magnitude of the weights to +/- 0.5 during
+    weights in a reasonable footprint, we constrain magnitude of the weights to +/-&nbsp;0.5 during
     training, which makes it easy to store them using 8-bit values. The resulting model fits
-    in just 85 kB (instead of the 340 kB required to store the weights as 32-bit floats).</p>
+    in just 85&nbsp;kB (instead of the 340&nbsp;kB required to store the weights as 32-bit floats).</p>
 
     <p>The C code is <a href="https://git.xiph.org/?p=rnnoise.git;a=summary">available</a> under the BSD license. Although as of writing this demo, the code
-    is not yet optimized, it already runs about 60x faster than real-time on an x86 CPU.
-    With good vectorization (SSE/AVX), it should be possible to make it about 4x faster than it currently is. </p>
+    is not yet optimized, it already runs about 60x&nbsp;faster than real-time on an x86 CPU. It even runs about 7x&nbsp;faster than
+    real-time on a Raspberry Pi&nbsp;3. 
+    With good vectorization (SSE/AVX), it should be possible to make it about 4x&nbsp;faster than it currently is. </p>
 
     <h2>Show Me the Samples!</h2>
 

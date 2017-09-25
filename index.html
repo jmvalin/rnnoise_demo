@@ -60,7 +60,7 @@
     a noise suppression algorithm that works... kinda... sometimes. The hard part is to make it work
     well, all the time, for all kinds of noise. That requires very careful tuning of every knob in the
     algorithm, many special cases for strange signals and lots of testing. There's always some weird
-    signal that will cause problems and requires more tuning and it's very easy to break more things
+    signal that will cause problems and require more tuning and it's very easy to break more things
     than you fix. It's 50% science, 50% art. I've been there before with the noise suppressor
     in the <a href="https://speex.org/">speexdsp library</a>. It kinda works, but it's not great.
     </p>
@@ -85,7 +85,7 @@
     Long Short-Term Memory (LSTM), the Gated Recurrent Unit (GRU), and their many variants.</p>
 
     <p>RNNoise uses the Gated Recurrent Unit (GRU) because it performs slightly better than LSTM on
-    this task and requires fewer resources (both CPU and memory for weights). Compared to <i>plain</i>
+    this task and requires fewer resources (both CPU and memory for weights). Compared to <i>simple</i>
     recurrent units, GRUs have two extra <i>gates</i>. The <i>reset</i> gate controls whether the
     state (memory) is used in computing the new state, whereas the <i>update</i> gate controls
     how much the state will change based on the new input. This update gate (when off) makes it
@@ -110,7 +110,7 @@
     <a href="https://arxiv.org/pdf/1412.5567.pdf">speech recognition</a> and to
     <a href="https://deepmind.com/blog/wavenet-generative-model-raw-audio/">speech synthesis</a>
     One the one hand, these end-to-end systems have proven just how powerful deep
-    neural networks can be. On the other end, these systems can sometimes be both suboptimal,
+    neural networks can be. On the other hand, these systems can sometimes be both suboptimal,
     and wasteful in terms of resources. For example, some approaches to noise suppression use
     layers with thousands of
     neurons &mdash; and tens of millions of weights &mdash; to perform noise suppression. The drawback
@@ -120,7 +120,7 @@
 
     <p>That's why we went with a different approach here: keep all the basic signal processing
     that's needed anyway (not have a neural network attempt to emulate it), but let the neural
-    network learn all the tricky parts that requires endless tweaking next to the signal processing.
+    network learn all the tricky parts that require endless tweaking next to the signal processing.
     Another thing that's different from <i>some</i> existing work on noise suppression with deep learning
     is that we're targeting real-time communication rather than speech recognition, so we can't afford
     to <i>look ahead</i> more than a few milliseconds (in this case 10 ms). 

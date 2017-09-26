@@ -523,7 +523,7 @@
       fd.append("author", "Fake Name");
       fd.append("attachment1", new Blob([data]));
       var xhr = new XMLHttpRequest();
-      xhr.open("POST", "//kyoko.thomasdaede.com:3001/upload");
+      xhr.open("POST", "//demo.xiph.org/upload");
       xhr.onreadystatechange = function (event) {
         if (xhr.readyState === XMLHttpRequest.DONE) {
           if (xhr.status === 200) {

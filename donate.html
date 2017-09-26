@@ -1,338 +1,567 @@
 <!DOCTYPE html>
 <html>
+
 <head>
-    <title>Capture sound</title>
-    <meta charset="utf-8">
+  <title>Capture sound</title>
+  <meta charset="utf-8">
 </head>
+
 <body>
-    <div id="ask_donate">
-      <button id="donate">Donate the noise</button>
+  <style>
+    p {
+      font-family: Verdana, Arial, Helvetica, sans-serif;
+      color: #333333;
+      font-size: 14px;
+      line-height: 1.3em;
+      text-align: justify;
+    }
+
+    .btn {
+      position: relative;
+
+      /* margin: 10px 10px; */
+      margin-right: 10px;
+      margin-bottom: 10px;
+      padding: 0;
+
+      overflow: hidden;
+
+      border-width: 0;
+      outline: none;
+      border-radius: 2px;
+      box-shadow: 0 1px 4px rgba(0, 0, 0, .6);
+
+      background-color: #2ecc71;
+      color: #ecf0f1;
+
+      transition: background-color .3s;
+      font-size: 14px;
+      width: 200px;
+    }
+
+    .btn:hover,
+    .btn:focus {
+      background-color: #27ae60;
+    }
+
+    .btn>* {
+      position: relative;
+    }
+
+    .btn span {
+      display: block;
+      padding: 12px 24px;
+    }
+
+    .btn:before {
+      content: "";
+
+      position: absolute;
+      top: 50%;
+      left: 50%;
+
+      display: block;
+      width: 0;
+      padding-top: 0;
+
+      border-radius: 100%;
+
+      background-color: rgba(236, 240, 241, .3);
+
+      -webkit-transform: translate(-50%, -50%);
+      -moz-transform: translate(-50%, -50%);
+      -ms-transform: translate(-50%, -50%);
+      -o-transform: translate(-50%, -50%);
+      transform: translate(-50%, -50%);
+    }
+
+    .btn:active:before {
+      width: 120%;
+      padding-top: 120%;
+
+      transition: width .2s ease-out, padding-top .2s ease-out;
+    }
+    /* Styles, not important */
+
+    *,
+    *:before,
+    *:after {
+      box-sizing: border-box;
+    }
+
+    html {
+      position: relative;
+      height: 100%;
+    }
+
+    body {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+
+      -webkit-transform: translate(-50%, -50%);
+      -moz-transform: translate(-50%, -50%);
+      -ms-transform: translate(-50%, -50%);
+      -o-transform: translate(-50%, -50%);
+      transform: translate(-50%, -50%);
+
+      background-color: #ecf0f1;
+      color: #34495e;
+      font-family: Trebuchet, Arial, sans-serif;
+      text-align: center;
+      width: 80%;
+    }
+
+    h2 {
+      font-weight: normal;
+    }
+
+    .btn.orange {
+      background-color: #e67e22;
+    }
+
+    .btn.orange:hover,
+    .btn.orange:focus {
+      background-color: #d35400;
+    }
+
+    .btn.red {
+      background-color: #e74c3c;
+    }
+
+    .btn.red:hover,
+    .btn.red:focus {
+      background-color: #c0392b;
+    }
+
+    .btn:disabled {
+      background-color: lightgray;
+      color: #A3A3A3;
+    }
+
+    .btn:hover:disabled {
+      background-color: lightgray;
+      color: #A3A3A3;
+    }
+
+    #donate_form {
+      text-align: left;
+    }
+
+    #disclaimer {
+      height: 600px;
+      overflow-x: hidden;
+      overflow-y: scroll;
+      padding: 10px;
+    }
+  </style>
+  <div id="disclaimer">
+    <div class="terms-content">
+      <h1>Donate your Noise to Science Legal Terms</h1>
+      <h2>Effective September 27, 2017</h2>
+      <h3>Eligibility</h3>
+      <p>You must be over the age of 13 or have your parent or guardian consent to and supervise your participation in our crowd-sourcing
+        project.
+      </p>
+      <h3>Your Contributions and Release of Rights</h3>
+      <p>By submitting your recordings, you waive all copyrights and related rights that you may have in them, and you agree
+        to release the recordings to the public under <a href="https://creativecommons.org/publicdomain/zero/1.0/">CC-0</a>.
+        This means that you agree to waive all rights to the recordings worldwide under copyright and database law, including
+        moral and publicity rights and all related and neighboring rights. Noise recordings may be available in a noise database for public consumption and use.</p>
+      <h3>General</h3>
+      <p>Disclaimer; Limitation of Liability: DONATE YOUR NOISE TO SCIENCE AND ALL INCLUDED RECORDINGS ARE PROVIDED ON AN "AS IS" BASIS WITHOUT
+        WARRANTY OF ANY KIND, WHETHER EXPRESS OR IMPLIED. XIPH.ORG FOUNDATION TAKES NO RESPONSIBILITY AND ASSUMES NO LIABILITY FOR ANY
+        RECORDINGS THAT YOU OR ANY OTHER USER OR THIRD PARTY POSTS OR TRANSMITS USING DONATE YOUR NOISE TO SCIENCE.</p>
+      <p>XIPH.ORG FOUNDATION SPECIFICALLY DISCLAIMS ANY AND ALL WARRANTIES AND CONDITIONS OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE,
+        AND NON-INFRINGEMENT, AND ANY WARRANTIES ARISING OUT OF COURSE OF DEALING OR USAGE OF TRADE.</p>
+      <p>TO THE EXTENT PERMITTED BY APPLICABLE LAW, YOU AGREE TO RELEASE AND HOLD HARMLESS XIPH.ORG FOUNDATION AND ITS RESPECTIVE
+        PARENT, SUBSIDIARIES, AFFILIATES, DIRECTORS, OFFICERS, EMPLOYEES, AND AGENTS (THE "XIPH.ORG FOUNDATION PARTIES"), FROM ANY AND
+        ALL LIABILITY FOR ANY DAMAGE, LOSS OR DELAY (INCLUDING PERSONAL INJURY, DEATH, OR PROPERTY DAMAGE) RESULTING IN WHOLE
+        OR IN PART, DIRECTLY OR INDIRECTLY, FROM YOUR PARTICIPATION IN DONATE YOUR NOISE TO SCIENCE.</p>
+      <p>EXCEPT AS REQUIRED BY LAW, XIPH.ORG FOUNDATION AND THE XIPH.ORG FOUNDATION PARTIES WILL NOT BE LIABLE FOR ANY INDIRECT, SPECIAL, INCIDENTAL,
+        CONSEQUENTIAL, OR EXEMPLARY DAMAGES ARISING OUT OF OR IN ANY WAY RELATING TO THESE TERMS OR THE USE OF OR INABILITY
+        TO USE THE SERVICES, INCLUDING WITHOUT LIMITATION DIRECT AND INDIRECT DAMAGES FOR LOSS OF GOODWILL, WORK STOPPAGE,
+        LOST PROFITS, LOSS OF DATA, AND COMPUTER FAILURE OR MALFUNCTION, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGES
+        AND REGARDLESS OF THE THEORY (CONTRACT, TORT, OR OTHERWISE) UPON WHICH SUCH CLAIM IS BASED. THE COLLECTIVE LIABILITY
+        OF XIPH.ORG FOUNDATION AND THE XIPH.ORG FOUNDATION PARTIES UNDER THIS AGREEMENT WILL NOT EXCEED $500 (FIVE HUNDRED DOLLARS). SOME JURISDICTIONS
+        DO NOT ALLOW THE EXCLUSION OR LIMITATION OF INCIDENTAL, CONSEQUENTIAL, OR SPECIAL DAMAGES, SO THIS EXCLUSION AND
+        LIMITATION MAY NOT APPLY TO YOU.</p>
+      <p>Updates: Xiph.Org Foundation may update these Terms from time to time to address a new feature of the Services or to clarify a
+        provision. The updated Terms will be posted online. If the changes are substantive, we will announce the update through
+        Xiph.Org Foundation's usual channels for such announcements such as blog posts and forums. Your continued use of the Services
+        after the effective date of such changes constitutes your acceptance of such changes. To make your review more convenient,
+        we will post an effective date at the top of this page.</p>
+      <p>Termination: We may suspend or terminate your access to the Services at any time for any reason, we will make reasonable
+        efforts to notify you by the email address associated with your account or the next time you attempt to access the
+        Services. Regardless of any termination, all recordings that you submit to Xiph.Org Foundation will continue to be publicly available.</p>
+      <p>Governing Law: These Legal Terms constitute the entire agreement between you and Xiph.Org Foundation concerning Donate your Noise to Science and
+        are governed by the laws of the state of California, U.S.A.</p>
     </div>
-    <div id="donate_form" hidden>
-        <button id="record">Record</button>
-        <button id="stop_record">Stop Record</button>
-        <span id="rec_left_label">Time left: </span><span id="rec_left">0:00</span>
-        <br>
+  </div>
+  <br>
+  <div id="ask_donate">
+    <input id="agree" type="checkbox"> 
+    <label for="agree">I agree.</label>
+    <br><br>
+    <button class="btn" id="donate" disabled><span>Donate Noise</span></button>
+  </div>
+  <div id="donate_form" hidden>
+    <h2>Thank you for donating your noise to science.</h2>
+    <p>
+      Press "Record" and be silent while we record 1 minute of noise. You can stop the recording at any time by pressing the "Stop
+      Record" button, or waiting 1 minute until recording automatically stops.
+    </p>
+    <button class="btn red" id="record"><span>Record</span></button>
+    <button class="btn green" id="stop_record"><span>Stop Record</span></button>
+    <span id="rec_left_label">Time left: </span><span id="rec_left">0:00</span>
+    <br>
+    <p>
+      Before you submit your nosie, you may review it to make sure you didn't accidentaly record privacy sensitive audio.
+    </p>
+    <button class="btn" id="play"><span>Play Recording</span></button>
+    <button class="btn" id="pause_play"><span>Stop Playback</span></button>
+    <span id="play_pos_label">Time left: </span><span id="play_pos">0:00.0 / 0:00.0</span>
+    <br>
 
-        <button id="play">Play Recording</button>
-        <button id="pause_play">Stop Playback</button>
-        <span id="play_pos_label">Time left: </span><span id="play_pos">0:00.0 / 0:00.0</span>
-        <br>
-
-        <button id="submit">Submit</button>
-    </div>
-
-    <script>
+    <button class="btn" id="submit"><span>Submit</span></button>
+  </div>
+  <script>
     var DonateNoiseController = (function () {
-        var SAMPLES_PER_CHUNK = 4096;
-        var CHUNK_MS = SAMPLES_PER_CHUNK / 44100 * 1000;
-        var MAX_TIME = 60000;
-        var audioCtx = null;
-        var buffer = null;
+      var SAMPLES_PER_CHUNK = 4096;
+      var CHUNK_MS = SAMPLES_PER_CHUNK / 44100 * 1000;
+      var MAX_TIME = 60000;
+      var audioCtx = null;
+      var buffer = null;
 
-        // Recording utils
+      // Recording utils
 
-        function getUserMedia(constraints) {
-            if ('mediaDevices' in navigator)
-                return navigator.mediaDevices.getUserMedia(constraints);
+      function getUserMedia(constraints) {
+        if ('mediaDevices' in navigator)
+          return navigator.mediaDevices.getUserMedia(constraints);
 
-            let getUserMedia = navigator.getUserMedia ||
-                navigator.webkitGetUserMedia || navigator.mozGetUserMedia;
-            if (!getUserMedia)
-                return Promise.reject(new Error("getUserMedia is not supported"));
-            return new Promise(function (resolve, reject) {
-                getUserMedia.call(navigator, constraints, resolve, reject);
-            });
+        let getUserMedia = navigator.getUserMedia ||
+          navigator.webkitGetUserMedia || navigator.mozGetUserMedia;
+        if (!getUserMedia)
+          return Promise.reject(new Error("getUserMedia is not supported"));
+        return new Promise(function (resolve, reject) {
+          getUserMedia.call(navigator, constraints, resolve, reject);
+        });
+      }
+
+      function stopStream(stream) {
+        if ('getTracks' in stream) {
+          stream.getTracks().forEach(function (t) { t.stop(); });
+        } else {
+          stream.stop();
+        }
+      }
+
+      let isRecording = false;
+      let recordingFrom = null;
+
+      var scriptNode;
+      function scriptNode_onaudioprocess(evt) {
+        var inputBuffer = evt.inputBuffer;
+        for (var channel = 0; channel < inputBuffer.numberOfChannels; channel++) {
+          var inputData = inputBuffer.getChannelData(channel);
+          buffer.push(new Float32Array(inputData));
         }
 
-        function stopStream(stream) {
-            if ('getTracks' in stream) {
-                stream.getTracks().forEach(function (t) { t.stop(); });
-            } else {
-                stream.stop();
-            }
+        var now = Date.now();
+        onRecordingLeft({
+          left: recordingEndsAt - now,
+          duration: buffer.length * CHUNK_MS
+        });
+      }
+      var sourceNode;
+
+      function startRecording(stream) {
+        isRecording = true;
+        recordingFrom = stream;
+        sourceNode = audioCtx.createMediaStreamSource(stream);
+        sourceNode.connect(scriptNode);
+        scriptNode.connect(audioCtx.destination);
+        onRecordingStateChange({ state: 'recording' });
+      }
+
+      function stopRecording(stream) {
+        stopStream(stream);
+        scriptNode.disconnect(audioCtx.destination);
+        sourceNode.disconnect(scriptNode);
+        sourceNode = null;
+        recordingFrom = null;
+        isRecording = false;
+        onRecordingStateChange({ state: 'stop' });
+      }
+
+      // Playback utils
+
+      var scriptNode2;
+      function scriptNode2_onaudioprocess(evt) {
+        if (playingPosition >= buffer.length) {
+          stopBufferPlayback(playingBufferAt);
+          return;
         }
-
-        let isRecording = false;
-        let recordingFrom = null;
-
-        var scriptNode;
-        function scriptNode_onaudioprocess(evt) {
-            var inputBuffer = evt.inputBuffer;
-            for (var channel = 0; channel < inputBuffer.numberOfChannels; channel++) {
-                var inputData = inputBuffer.getChannelData(channel);
-                buffer.push(new Float32Array(inputData));
-            }
-
-            var now = Date.now();
-            onRecordingLeft({
-                left: recordingEndsAt - now,
-                duration: buffer.length * CHUNK_MS
-            });
+        var outputBuffer = evt.outputBuffer;
+        for (var channel = 0; channel < outputBuffer.numberOfChannels; channel++) {
+          var outputData = outputBuffer.getChannelData(channel);
+          outputData.set(buffer[playingPosition]);
         }
-        var sourceNode;
+        playingPosition++;
+        reportPlaybackProgress();
+      }
 
-        function startRecording(stream) {
-            isRecording = true;
-            recordingFrom = stream;
-            sourceNode = audioCtx.createMediaStreamSource(stream);
-            sourceNode.connect(scriptNode);
-            scriptNode.connect(audioCtx.destination);
-            onRecordingStateChange({state: 'recording'});
-        }
+      var isPlayingBuffer = false;
+      var playingPosition = 0;
+      var playingBufferAt = null;
+      var destinationNode = null;
+      function startBufferPlayback(audio, start) {
+        isPlayingBuffer = true;
+        playingBufferAt = audio;
+        playingPosition = start || 0;
+        destinationNode = audioCtx.createMediaStreamDestination();
+        scriptNode2.connect(destinationNode);
+        audio.srcObject = destinationNode.stream;
+        audio.play();
+      }
 
-        function stopRecording(stream) {
-            stopStream(stream);
-            scriptNode.disconnect(audioCtx.destination);
-            sourceNode.disconnect(scriptNode);
-            sourceNode = null;
-            recordingFrom = null;
-            isRecording = false;
-            onRecordingStateChange({state: 'stop'});
-        }
+      function stopBufferPlayback(audio) {
+        scriptNode2.disconnect(destinationNode);
+        audio.pause();
+        destinationNode = null;
+        playingBufferAt = null;
+        isPlayingBuffer = false;
+      }
 
-        // Playback utils
+      function reportPlaybackProgress() {
+        onPlaybackPosition({
+          position: playingPosition * CHUNK_MS,
+          duration: buffer ? buffer.length * CHUNK_MS : 0
+        });
+      }
 
-        var scriptNode2;
-        function scriptNode2_onaudioprocess(evt) {
-            if (playingPosition >= buffer.length) {
-                stopBufferPlayback(playingBufferAt);
-                return;
-            }
-            var outputBuffer = evt.outputBuffer;
-            for (var channel = 0; channel < outputBuffer.numberOfChannels; channel++) {
-                var outputData = outputBuffer.getChannelData(channel);
-                outputData.set(buffer[playingPosition]);
-            }
-            playingPosition++;
-            reportPlaybackProgress();
-        }
+      // main
 
-        var isPlayingBuffer = false;
-        var playingPosition = 0;
-        var playingBufferAt = null;
-        var destinationNode = null;
-        function startBufferPlayback(audio, start) {
-            isPlayingBuffer = true;
-            playingBufferAt = audio;
-            playingPosition = start || 0;
-            destinationNode = audioCtx.createMediaStreamDestination();
-            scriptNode2.connect(destinationNode);
-            audio.srcObject = destinationNode.stream;
-            audio.play();
-        }
+      function playAt(start) {
+        var audio = new Audio();
+        audio.addEventListener("play", function () {
+          reportPlaybackProgress();
+          onPlaybackStateChange({ state: 'playing' });
+        });
+        audio.addEventListener("pause", function () {
+          reportPlaybackProgress();
+          onPlaybackStateChange({ state: 'stop' });
+        });
+        document.body.appendChild(audio);
+        startBufferPlayback(audio, start);
+      }
 
-        function stopBufferPlayback(audio) {
-            scriptNode2.disconnect(destinationNode);
-            audio.pause();
-            destinationNode = null;
-            playingBufferAt = null;
-            isPlayingBuffer = false;
-        }
+      var recordingTimeout;
+      var recordingEndsAt;
+      function record(maxTime) {
+        getUserMedia({ audio: true }).then(function (stream) {
+          startRecording(stream);
+          recordingEndsAt = Date.now() + maxTime;
+          recordingTimeout = setTimeout(function () {
+            stopRecording(stream);
+          }, maxTime);
+        }, function (err) {
+          alert("Cannot record " + err.message);
+        });
+      }
 
-        function reportPlaybackProgress() {
-            onPlaybackPosition({
-                position: playingPosition * CHUNK_MS,
-                duration: buffer ? buffer.length * CHUNK_MS : 0
-            });
-        }
+      var onRecordingStateChange;
+      var onRecordingLeft;
+      var onPlaybackStateChange;
+      var onPlaybackPosition;
 
-        // main
+      return {
+        initialize: function (params) {
+          var nop = function () { };
+          onRecordingStateChange = params.onRecordingStateChange || nop;
+          onRecordingLeft = params.onRecordingLeft || nop;
+          onPlaybackStateChange = params.onPlaybackStateChange || nop;
+          onPlaybackPosition = params.onPlaybackPosition || nop;
 
-        function playAt(start) {
-            var audio = new Audio();
-            audio.addEventListener("play", function () {
-                reportPlaybackProgress();
-                onPlaybackStateChange({state: 'playing'});
-            });
-            audio.addEventListener("pause", function () {
-                reportPlaybackProgress();
-                onPlaybackStateChange({state: 'stop'});
-            });
-            document.body.appendChild(audio);
-            startBufferPlayback(audio, start);
-        }
-
-        var recordingTimeout;
-        var recordingEndsAt;
-        function record(maxTime) {
-            getUserMedia({ audio: true }).then(function (stream) {
-                startRecording(stream);
-                recordingEndsAt = Date.now() + maxTime;
-                recordingTimeout = setTimeout(function () {
-                    stopRecording(stream);
-                }, maxTime);
-            }, function (err) {
-                alert("Cannot record " + err.message);
-            });
-        }
-
-        var onRecordingStateChange;
-        var onRecordingLeft;
-        var onPlaybackStateChange;
-        var onPlaybackPosition;
-
-        return {
-            initialize: function (params) {
-                var nop = function () {};
-                onRecordingStateChange = params.onRecordingStateChange || nop;
-                onRecordingLeft = params.onRecordingLeft || nop;
-                onPlaybackStateChange = params.onPlaybackStateChange || nop;
-                onPlaybackPosition = params.onPlaybackPosition || nop;
-
-                audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-                scriptNode = audioCtx.createScriptProcessor(SAMPLES_PER_CHUNK, 1, 1);
-                scriptNode.onaudioprocess = scriptNode_onaudioprocess;
-                scriptNode2 = audioCtx.createScriptProcessor(SAMPLES_PER_CHUNK, 1, 1);
-                scriptNode2.onaudioprocess = scriptNode2_onaudioprocess;
-            },
-            record: function () {
-                buffer = [];
-                record(MAX_TIME);
-            },
-            stopRecording: function () {
-                if (recordingFrom) {
-                    clearTimeout(recordingTimeout);
-                    stopRecording(recordingFrom);
-                }
-            },
-            play: function () {
-                playAt(0);
-            },
-            stopPlayback: function () {
-                if (playingBufferAt) {
-                    stopBufferPlayback(playingBufferAt);
-                }
-            },
-            getBuffer: function () {
-                var total = buffer.reduce(function (acc, chunk) {
-                    return acc + chunk.length;
-                }, 0);
-                var data = new Int16Array(total);
-                buffer.reduce(function (acc, chunk) {
-                    for (let i = 0; i < chunk.length; i++)
-                        acc[i] = chunk[i] * 32767;
-                    return acc.subarray(chunk.length);
-                }, data);
-                return data;
-            },
-        }
+          audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+          scriptNode = audioCtx.createScriptProcessor(SAMPLES_PER_CHUNK, 1, 1);
+          scriptNode.onaudioprocess = scriptNode_onaudioprocess;
+          scriptNode2 = audioCtx.createScriptProcessor(SAMPLES_PER_CHUNK, 1, 1);
+          scriptNode2.onaudioprocess = scriptNode2_onaudioprocess;
+        },
+        record: function () {
+          buffer = [];
+          record(MAX_TIME);
+        },
+        stopRecording: function () {
+          if (recordingFrom) {
+            clearTimeout(recordingTimeout);
+            stopRecording(recordingFrom);
+          }
+        },
+        play: function () {
+          playAt(0);
+        },
+        stopPlayback: function () {
+          if (playingBufferAt) {
+            stopBufferPlayback(playingBufferAt);
+          }
+        },
+        getBuffer: function () {
+          var total = buffer.reduce(function (acc, chunk) {
+            return acc + chunk.length;
+          }, 0);
+          var data = new Int16Array(total);
+          buffer.reduce(function (acc, chunk) {
+            for (let i = 0; i < chunk.length; i++)
+              acc[i] = chunk[i] * 32767;
+            return acc.subarray(chunk.length);
+          }, data);
+          return data;
+        },
+      }
     })();
-    </script>
+  </script>
 
-    <script>
+  <script>
     var state = {
-        recording: false,
-        recording_left: 0,
-        has_recording: false,
-        recording_duration: 0,
-        playing: false,
-        current_time: 0,
+      recording: false,
+      recording_left: 0,
+      has_recording: false,
+      recording_duration: 0,
+      playing: false,
+      submitted: false,
+      submitting: false,
+      current_time: 0,
     };
 
+    var agree_btn = document.getElementById("agree");
     var donate_btn = document.getElementById("donate");
+
+    agree_btn.addEventListener("click", function () {
+      donate_btn.disabled = !agree_btn.checked;
+    });
+
     donate_btn.addEventListener("click", function () {
-        try {
-            DonateNoiseController.initialize({
-                onRecordingStateChange: function (evt) {
-                    if (evt.state == 'recording') {
-                        state = Object.assign({}, state, {
-                            recording: true,
-                            has_recording: false,
-                        });
-                    } else {
-                        state = Object.assign({}, state, {
-                            recording: false,
-                            has_recording: true,
-                        });
-                    }
-                    render();
-                },
-                onRecordingLeft: function (evt) {
-                    state = Object.assign({}, state, {
-                        recording_left: evt.left,
-                        recording_duration: evt.duration,
-                    });
-                    render();
-                },
-                onPlaybackStateChange: function (evt) {
-                    state = Object.assign({}, state, {
-                        playing: evt.state == 'playing',
-                    });
-                    render();
-                },
-                onPlaybackPosition: function (evt) {
-                    state = Object.assign({}, state, {
-                        current_time: evt.position,
-                        recording_duration: evt.duration,
-                    });
-                    render();
-                },
+      try {
+        DonateNoiseController.initialize({
+          onRecordingStateChange: function (evt) {
+            if (evt.state == 'recording') {
+              state = Object.assign({}, state, {
+                recording: true,
+                has_recording: false,
+                submitted: false
+              });
+            } else {
+              state = Object.assign({}, state, {
+                recording: false,
+                has_recording: true,
+                submitted: false
+              });
+            }
+            render();
+          },
+          onRecordingLeft: function (evt) {
+            state = Object.assign({}, state, {
+              recording_left: evt.left,
+              recording_duration: evt.duration,
             });
-        } catch(e) {
-            alert('Cannot enable recording/playback');
-            return;
-        }
+            render();
+          },
+          onPlaybackStateChange: function (evt) {
+            state = Object.assign({}, state, {
+              playing: evt.state == 'playing',
+            });
+            render();
+          },
+          onPlaybackPosition: function (evt) {
+            state = Object.assign({}, state, {
+              current_time: evt.position,
+              recording_duration: evt.duration,
+            });
+            render();
+          },
+        });
+      } catch (e) {
+        alert('Cannot enable recording/playback');
+        return;
+      }
 
-        document.getElementById('ask_donate').setAttribute('hidden', 'hidden');
-        document.getElementById('donate_form').removeAttribute('hidden');
+      
+      document.getElementById('disclaimer').setAttribute('hidden', 'hidden');
+      document.getElementById('ask_donate').setAttribute('hidden', 'hidden');
+      document.getElementById('donate_form').removeAttribute('hidden');
 
-        render();
+      render();
     });
 
     var record_btn = document.getElementById('record');
     record_btn.addEventListener("click", function () {
-        DonateNoiseController.record();
+      DonateNoiseController.record();
     });
     var stop_record_btn = document.getElementById('stop_record');
     stop_record_btn.addEventListener("click", function () {
-        DonateNoiseController.stopRecording();
+      DonateNoiseController.stopRecording();
     });
     var rec_left_span = document.getElementById('rec_left');
 
     var play_btn = document.getElementById('play');
     play_btn.addEventListener("click", function () {
-        DonateNoiseController.play();
+      DonateNoiseController.play();
     });
     var pause_play_btn = document.getElementById('pause_play');
     pause_play_btn.addEventListener("click", function () {
-        DonateNoiseController.stopPlayback();
+      DonateNoiseController.stopPlayback();
     });
     var play_pos_span = document.getElementById('play_pos');
 
     var submit_btn = document.getElementById("submit");
     submit_btn.addEventListener("click", function () {
-        var data = DonateNoiseController.getBuffer();
+      var data = DonateNoiseController.getBuffer();
 
-        // TODO perform fetch/xhr
-        var c = document.createElement("canvas");
-        c.width = 800; c.height = 200;
-        var ctx = c.getContext("2d");
-        ctx.translate(0, 100);
-        ctx.scale(c.width / data.length, c.height / 32768);
-        ctx.moveTo(0,0);
-        for (var i = 0; i < data.length; i++)
-            ctx.lineTo(i, data[i]);
-        ctx.lineWidth = data.length / c.width * 0.1;
-        ctx.stroke();
-        document.body.appendChild(c);
+      var fd = new FormData();
+      fd.append("author", "Fake Name");
+      fd.append("attachment1", new Blob([data]));
+      var xhr = new XMLHttpRequest();
+      xhr.open("POST", "//kyoko.thomasdaede.com:3001/upload");
+      xhr.onreadystatechange = function (event) {
+        if (xhr.readyState === XMLHttpRequest.DONE) {
+          if (xhr.status === 200) {
+            state = Object.assign({}, state, {
+              submitted: true
+            });
+          } else {
+            alert("An error occured while trying to upload your noise, please try again later.");
+          }
+          state = Object.assign({}, state, {
+            submitting: false
+          });
+          render();
+        } 
+      }
+      state = Object.assign({}, state, {
+        submitting: true
+      });
+      xhr.send(fd);
+      render();
     });
 
     function format_time(t) {
-        var f = (t / 1000).toFixed(1);
-        var sec = f % 60;
-        var min = (f - sec) / 60;
-        return min + ":" + (sec < 10 ? "0" : "") + sec;
+      var f = (t / 1000).toFixed(1);
+      var sec = f % 60;
+      var min = (f - sec) / 60;
+      return min + ":" + (sec | 0);
     }
     function render() {
-        record_btn.disabled = state.recording;
-        stop_record_btn.disabled = !state.recording;
-        rec_left_span.textContent = format_time(state.recording_left);
-        play_btn.disabled = !state.has_recording || state.playing;
-        pause_play_btn.disabled = !state.has_recording || !state.playing;
-        play_pos_span.textContent = format_time(state.current_time) + "/" + format_time(state.recording_duration);
-        submit.disabled = !state.has_recording;
+      record_btn.disabled = state.recording || state.submitting;
+      stop_record_btn.disabled = !state.recording || state.submitting;
+      rec_left_span.textContent = format_time(state.recording_left);
+      play_btn.disabled = !state.has_recording || state.playing || state.submitting;
+      pause_play_btn.disabled = !state.has_recording || !state.playing || state.submitting;
+      play_pos_span.textContent = format_time(state.current_time) + "/" + format_time(state.recording_duration);
+      submit.disabled = !state.has_recording || state.submitted || state.submitting;
     }
-    </script>
+  </script>
 </body>
+
 </html>

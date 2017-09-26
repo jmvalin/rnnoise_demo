@@ -332,7 +332,7 @@ function postData(arrayBuffer) {
   fd.append("author", "Fake Name");
   fd.append("attachment1", new Blob([arrayBuffer]));
   var xhr = new XMLHttpRequest();
-  xhr.open("POST", "http://kyoko.thomasdaede.com:3001/upload");
+  xhr.open("POST", "https://demo.xiph.org/upload");
   xhr.onload = function (event) {
     uploadedPackets++;
     streamingStatus.innerText = "Donated " + uploadedPackets + " seconds of noise (of 60).";

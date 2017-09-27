@@ -554,7 +554,8 @@
       var f = (t / 1000).toFixed(1);
       var sec = f % 60;
       var min = (f - sec) / 60;
-      return min + ":" + (sec | 0);
+      let secText = (sec < 10 ? "0" : "") + (sec | 0);
+      return min + ":" + secText;
     }
     function render() {
       record_btn.disabled = state.recording || state.submitting;

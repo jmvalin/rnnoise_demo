@@ -564,6 +564,7 @@
       pause_play_btn.disabled = !state.has_recording || !state.playing || state.submitting;
       play_pos_span.textContent = format_time(state.current_time) + "/" + format_time(state.recording_duration);
       submit.disabled = !state.has_recording || state.submitted || state.submitting;
+      submit.innerHTML = "<span>" + (state.submitting ? "Uploading ..." : "Submit") + "</span>";
     }
   </script>
 </body>

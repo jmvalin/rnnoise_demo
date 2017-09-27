@@ -226,7 +226,19 @@
     <button class="btn" id="pause_play"><span>Stop Playback</span></button>
     <span id="play_pos_label">Time left: </span><span id="play_pos">0:00.0 / 0:00.0</span>
     <br>
-
+    <p>
+      Where are you?
+    </p>
+    <select id="kind">
+      <option value="other">Other</option>
+      <option value="office">Office</option>
+      <option value="street">Street</option>
+      <option value="coffee">Restaurant</option>
+      <option value="car">Car</option>
+      <option value="car">Train</option>
+    </select>
+    <br>
+    <br>
     <button class="btn" id="submit"><span>Submit</span></button>
     <span id="status"></span>
   </div>
@@ -522,11 +534,13 @@
 
     var submit_btn = document.getElementById("submit");
     var status_span = document.getElementById('status');
+    
     submit_btn.addEventListener("click", function () {
       var data = DonateNoiseController.getBuffer();
+      var kind = document.getElementById('kind');
 
       var fd = new FormData();
-      fd.append("author", "Fake Name");
+      fd.append("kind", kind.value);
       fd.append("attachment1", new Blob([data]));
       var xhr = new XMLHttpRequest();
       xhr.open("POST", "//demo.xiph.org/upload");
@@ -559,6 +573,7 @@
       let secText = (sec < 10 ? "0" : "") + (sec | 0);
       return min + ":" + secText;
     }
+
     function render() {
       record_btn.disabled = state.recording || state.submitting;
       stop_record_btn.disabled = !state.recording || state.submitting;

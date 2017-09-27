@@ -228,6 +228,7 @@
     <br>
 
     <button class="btn" id="submit"><span>Submit</span></button>
+    <span id="status"></span>
   </div>
   <script>
     var DonateNoiseController = (function () {
@@ -520,6 +521,7 @@
     var play_pos_span = document.getElementById('play_pos');
 
     var submit_btn = document.getElementById("submit");
+    var status_span = document.getElementById('status');
     submit_btn.addEventListener("click", function () {
       var data = DonateNoiseController.getBuffer();
 
@@ -566,6 +568,7 @@
       play_pos_span.textContent = format_time(state.current_time) + "/" + format_time(state.recording_duration);
       submit.disabled = !state.has_recording || state.submitted || state.submitting;
       submit.innerHTML = "<span>" + (state.submitting ? "Uploading ..." : "Submit") + "</span>";
+      status_span.textContent = state.submitted ? "It worked! Your donation is appreciated." : "";
     }
   </script>
 </body>

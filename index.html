@@ -115,7 +115,7 @@
     the way down. End-to-end approaches have been applied to
     <a href="https://arxiv.org/pdf/1412.5567.pdf">speech recognition</a> and to
     <a href="https://deepmind.com/blog/wavenet-generative-model-raw-audio/">speech synthesis</a>
-    One the one hand, these end-to-end systems have proven just how powerful deep
+    On the one hand, these end-to-end systems have proven just how powerful deep
     neural networks can be. On the other hand, these systems can sometimes be both suboptimal,
     and wasteful in terms of resources. For example, some approaches to noise suppression use
     layers with thousands of
@@ -145,7 +145,7 @@
       Layout of the Opus bands vs the actual Bark scale. For RNNoise, we use the same base layout
       as Opus. Since we overlap the bands, the boundaries between the Opus bands become the center
       of the overlapped RNNoise bands. The bands are wider at higher frequency because the ear has
-      poorer frequency resolution there. At low frquencies, the bands are narrower, but not as narrow
+      poorer frequency resolution there. At low frequencies, the bands are narrower, but not as narrow
       as the Bark scale would give because then we would not have enough data to make good estimates.
     </div>
 
@@ -155,7 +155,7 @@
     signal through.</p>
 
     <p>There are several advantages to operating with per-band gains. First, it makes for a much
-    simpler model since there are fewer bands to compute. Second, in makes it impossible to create
+    simpler model since there are fewer bands to compute. Second, it makes it impossible to create
     so-called <i>musical noise</i> artifacts, where only a single tone gets though while its neighbours
     are attenuated. These artifacts are common in noise suppression and quite annoying. With bands that
     are wide enough, we either let a whole band through, or we cut it all. The third advantage comes from
@@ -213,7 +213,7 @@
     Topology of the neural network used in this project. Each yellow box represents a layer of
     neurons, with the number of units indicated in parentheses. <i>Dense</i> layers are
     fully-connected, non-recurrent layers. 
-    One of the output of the network is a set of gains to apply at different frequencies. The
+    One of the outputs of the network is a set of gains to apply at different frequencies. The
     other output is a voice activity probability, which is not used for noise suppression
     but is a useful by-product of the network.
     </div>
@@ -234,7 +234,7 @@
         to train a neural network to recognize tanks camouflaged in trees. They took pictures of
         trees with and without tanks, then trained a neural network to identify the ones that had
         a tank. The network succeeded beyond expectations! There was just one problem. Since the
-        photos with tanks had been taken on cloudy days while the photos without tanks has been
+        photos with tanks had been taken on cloudy days while the photos without tanks had been
         taken on sunny days, what the network really learned was how to tell a cloudy day from a
         sunny day. While researchers are now aware of the issue and avoid such obvious mistakes,
         more subtle versions of it can still occur (and have occurred to yours truly in the past).
@@ -293,7 +293,7 @@
     not the language of choice for real-time systems, we have to implement the run-time code
     in C. Fortunately, running a neural network is by far easier than training one, so
     all we had to do was implement feed-forward and GRU layers. To make it easier to fit the
-    weights in a reasonable footprint, we constrain magnitude of the weights to +/-&nbsp;0.5 during
+    weights in a reasonable footprint, we constrain the magnitude of the weights to +/-&nbsp;0.5 during
     training, which makes it easy to store them using 8-bit values. The resulting model fits
     in just 85&nbsp;kB (instead of the 340&nbsp;kB required to store the weights as 32-bit floats).</p>
 

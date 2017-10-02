@@ -280,7 +280,13 @@ function getMicrophoneAccess() {
   }
 
   // Get access to the microphone and start pumping data through the graph.
-  navigator.getUserMedia({ audio: true }, function (stream) {
+  navigator.getUserMedia({
+    audio: {
+      echoCancellation: false,
+      noiseSuppression: false,
+      autoGainControl: false,
+    }
+  }, function (stream) {
     mediaStream = stream;
     var microphone = audioContext.createMediaStreamSource(stream);
     var sourceAnalyserNode = audioContext.createAnalyser();
